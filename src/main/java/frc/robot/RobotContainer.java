@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -21,7 +22,8 @@ import frc.robot.Constants.driverConstants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
-
+import frc.robot.subsystems.algae.AlgaeSubsystem;
+import frc.robot.subsystems.coral.CoralSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
 /**
@@ -41,6 +43,10 @@ public class RobotContainer {
       "swerve"));
 
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+
+  private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
+
+  private final CoralSubsystem coralSubsystem = new CoralSubsystem();
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled
@@ -114,11 +120,12 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses
    * for
    * {@link CommandXboxController
-   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller PS4}
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.butt on.CommandPS4Controller PS4}
    * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick
    * Flight joysticks}.
    */
   private void configureBindings() {
+    SmartDashboard.putData(elevatorSubsystem);
 
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
@@ -154,7 +161,7 @@ public class RobotContainer {
       driverJoystick.button(driverConstants.kButtonRightBumper).onTrue(Commands.none());
     } else {
       driverJoystick.button(driverConstants.kButtonA).onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverJoystick.button(driverConstants.kButtonX).onTrue(elevatorSubsystem.cGoTo(10));
+      driverJoystick.button(driverConstants.kButtonX).whileTrue(elevatorSubsystem.cGoTo(10));
       driverJoystick.button(driverConstants.kButtonB).whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));

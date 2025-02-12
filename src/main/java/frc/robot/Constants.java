@@ -90,4 +90,28 @@ public final class Constants {
     public static final double levelFour = 30.00;
   }
 
+  public static class AlgaeConstants {
+    public static final int motorLeftCANID = 24;
+    public static final int motorRightCANID = 25;
+    public static final MotorType motorLeftType = MotorType.kBrushless;
+    public static final MotorType motorRightType = MotorType.kBrushless;
+    public static final boolean motorLeftInvert = true;
+    public static final boolean motorRightInvert = false;
+
+    public static final double inSpeed = 0.5;
+    public static final double outSpeed = 0.5;
+  }
+
+  public static class CoralConstants {
+    public static final int motorLeftCANID = 22;
+    public static final int motorRightCANID = 23;
+    public static final MotorType motorLeftType = MotorType.kBrushless;
+    public static final MotorType motorRightType = MotorType.kBrushless;
+    public static final boolean motorLeftInvert = true;
+    public static final boolean motorRightInvert = false;
+
+    public static final double inSpeed = 0.5;
+    public static final double outSpeed = 0.5;
+  }
+
 }

@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkSim;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -25,6 +26,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     public ElevatorSubsystem() {
         motorLeft = new SparkMax(ElevatorConstants.motorLeftCANID, ElevatorConstants.motorLeftType);
         motorRight = new SparkMax(ElevatorConstants.motorRightCANID, ElevatorConstants.motorRightType);
+
+        motorLeftConfig = new SparkMaxConfig();
+
+        motorLeftConfig.inverted(ElevatorConstants.motorLeftInvert);
 
         motorLeftConfig.encoder
                 .positionConversionFactor(1)
@@ -51,6 +56,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         sparkEncoderLeft = motorLeft.getEncoder();
 
+        motorRightConfig = new SparkMaxConfig();
+
         motorRightConfig.follow(motorLeft, ElevatorConstants.motorRightInvert);
 
         motorRight.configure(motorRightConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -60,7 +67,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Left Encoder", sparkEncoderLeft.getPosition());
+        SmartDashboard.putNumber("Elevator Left Encoder", sparkEncoderLeft.getPosition());
+        SmartDashboard.putNumber("Elevator Left Motor", motorLeft.get());
+        SmartDashboard.putNumber("Elevator Right Motor", motorRight.get());
     }
 
     public void vStop() {
@@ -68,7 +77,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public Command cStop() {
-        return runOnce(
+        return run(
                 () -> {
                     motorLeft.stopMotor();
                 })
@@ -80,7 +89,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public Command cGoTo(double targetHeight) {
-        return runOnce(
+        return run(
                 () -> {
                     this.vGoTo(targetHeight);
                 })
