@@ -15,8 +15,8 @@
     "canbus": null
   },
   "encoder": {
-    "type": "attached",
-    "id": 0,
+    "type": "sparkflex_attached",
+    "id": 13,
     "canbus": null
   },
   "inverted": {

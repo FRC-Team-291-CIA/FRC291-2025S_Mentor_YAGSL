@@ -154,7 +154,7 @@ public class RobotContainer {
       driverJoystick.button(driverConstants.kButtonRightBumper).onTrue(Commands.none());
     } else {
       driverJoystick.button(driverConstants.kButtonA).onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverJoystick.button(driverConstants.kButtonX).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+      driverJoystick.button(driverConstants.kButtonX).onTrue(elevatorSubsystem.cGoTo(10));
       driverJoystick.button(driverConstants.kButtonB).whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));

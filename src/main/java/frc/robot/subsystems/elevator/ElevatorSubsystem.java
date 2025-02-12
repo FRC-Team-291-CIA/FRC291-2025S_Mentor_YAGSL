@@ -13,7 +13,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WrapperCommand;
 import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -26,10 +25,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     public ElevatorSubsystem() {
         motorLeft = new SparkMax(ElevatorConstants.motorLeftCANID, ElevatorConstants.motorLeftType);
         motorRight = new SparkMax(ElevatorConstants.motorRightCANID, ElevatorConstants.motorRightType);
-
-        closedLoopControllerLeft = motorLeft.getClosedLoopController();
-
-        sparkEncoderLeft = motorLeft.getEncoder();
 
         motorLeftConfig.encoder
                 .positionConversionFactor(1)
@@ -51,6 +46,10 @@ public class ElevatorSubsystem extends SubsystemBase {
                 .outputRange(-1, 1, ClosedLoopSlot.kSlot1);
 
         motorLeft.configure(motorLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+
+        closedLoopControllerLeft = motorLeft.getClosedLoopController();
+
+        sparkEncoderLeft = motorLeft.getEncoder();
 
         motorRightConfig.follow(motorLeft, ElevatorConstants.motorRightInvert);
 
