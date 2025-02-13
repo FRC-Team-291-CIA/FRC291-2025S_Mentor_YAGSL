@@ -63,14 +63,14 @@ public final class Constants {
 
     public static final int kButtonA = 1;
     public static final int kButtonB = 2;
-    public static final int kButtonY = 3;
-    public static final int kButtonX = 4;
+    public static final int kButtonY = 4;
+    public static final int kButtonX = 3;
 
-    public static final int kButtonBack = 5;
-    public static final int kButtonStart = 6;
+    public static final int kButtonBack = 7;
+    public static final int kButtonStart = 8;
 
-    public static final int kButtonRightBumper = 7;
-    public static final int kButtonLeftBumper = 8;
+    public static final int kButtonRightBumper = 6;
+    public static final int kButtonLeftBumper = 5;
 
     public static final double kDeadbandAxisY = 0.05;
     public static final double kDeadbandAxisX = 0.05;
@@ -83,7 +83,7 @@ public final class Constants {
     public static final MotorType motorLeftType = MotorType.kBrushless;
     public static final MotorType motorRightType = MotorType.kBrushless;
     public static final boolean motorLeftInvert = true;
-    public static final boolean motorRightInvert = false;
+    public static final boolean motorRightInvert = true;
 
     public static final double levelTwo = 10.00;
     public static final double levelThree = 20.00;
@@ -93,11 +93,10 @@ public final class Constants {
   public static class AlgaeConstants {
     public static final int motorLeftCANID = 24;
     public static final int motorRightCANID = 25;
-    public static final MotorType motorLeftType = MotorType.kBrushless;
-    public static final MotorType motorRightType = MotorType.kBrushless;
+    public static final MotorType motorLeftType = MotorType.kBrushed;
+    public static final MotorType motorRightType = MotorType.kBrushed;
     public static final boolean motorLeftInvert = true;
     public static final boolean motorRightInvert = false;
-
     public static final double inSpeed = 0.5;
     public static final double outSpeed = 0.5;
   }
@@ -105,8 +104,8 @@ public final class Constants {
   public static class CoralConstants {
     public static final int motorLeftCANID = 22;
     public static final int motorRightCANID = 23;
-    public static final MotorType motorLeftType = MotorType.kBrushless;
-    public static final MotorType motorRightType = MotorType.kBrushless;
+    public static final MotorType motorLeftType = MotorType.kBrushed;
+    public static final MotorType motorRightType = MotorType.kBrushed;
     public static final boolean motorLeftInvert = true;
     public static final boolean motorRightInvert = false;
 

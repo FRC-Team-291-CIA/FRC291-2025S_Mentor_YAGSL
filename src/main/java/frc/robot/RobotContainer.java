@@ -22,7 +22,7 @@ import frc.robot.Constants.driverConstants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
-import frc.robot.subsystems.algae.AlgaeSubsystem;
+//import frc.robot.subsystems.algae.AlgaeSubsystem;
 import frc.robot.subsystems.coral.CoralSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
@@ -44,7 +44,7 @@ public class RobotContainer {
 
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
-  private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
+  // private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
 
   private final CoralSubsystem coralSubsystem = new CoralSubsystem();
 
@@ -161,11 +161,11 @@ public class RobotContainer {
       driverJoystick.button(driverConstants.kButtonRightBumper).onTrue(Commands.none());
     } else {
       driverJoystick.button(driverConstants.kButtonA).onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverJoystick.button(driverConstants.kButtonX).whileTrue(elevatorSubsystem.cGoTo(10));
+      driverJoystick.button(driverConstants.kButtonX).whileTrue(elevatorSubsystem.cGoTo(-7.5));
       driverJoystick.button(driverConstants.kButtonB).whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-      driverJoystick.button(driverConstants.kButtonStart).whileTrue(Commands.none());
+      driverJoystick.button(driverConstants.kButtonStart).whileTrue(elevatorSubsystem.cGoTo(-52));
       driverJoystick.button(driverConstants.kButtonBack).whileTrue(Commands.none());
       driverJoystick.button(driverConstants.kButtonLeftBumper)
           .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
