@@ -3,7 +3,7 @@
     "front": 12,
     "left": 12
   },
-  "absoluteEncoderOffset": 345.59,
+  "absoluteEncoderOffset": 165.05,
   "drive": {
     "type": "sparkflex_vortex",
     "id": 10,
@@ -21,7 +21,7 @@
   },
   "inverted": {
     "drive": true,
-    "angle": true
+    "angle": false
   },
   "absoluteEncoderInverted": false
 }

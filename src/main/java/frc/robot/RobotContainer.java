@@ -161,15 +161,15 @@ public class RobotContainer {
       driverJoystick.button(driverConstants.kButtonRightBumper).onTrue(Commands.none());
     } else {
       driverJoystick.button(driverConstants.kButtonA).onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverJoystick.button(driverConstants.kButtonX).whileTrue(elevatorSubsystem.cGoTo(-7.5));
+      driverJoystick.button(driverConstants.kButtonX).whileTrue(elevatorSubsystem.cGoTo(-5));
       driverJoystick.button(driverConstants.kButtonB).whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-      driverJoystick.button(driverConstants.kButtonStart).whileTrue(elevatorSubsystem.cGoTo(-52));
-      driverJoystick.button(driverConstants.kButtonBack).whileTrue(Commands.none());
+      driverJoystick.button(driverConstants.kButtonStart).whileTrue(elevatorSubsystem.cGoTo(-40));
+      driverJoystick.button(driverConstants.kButtonBack).whileTrue(coralSubsystem.cIn());
       driverJoystick.button(driverConstants.kButtonLeftBumper)
           .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverJoystick.button(driverConstants.kButtonRightBumper).onTrue(Commands.none());
+      driverJoystick.button(driverConstants.kButtonRightBumper).whileTrue(coralSubsystem.cOut());
     }
 
   }

@@ -7,7 +7,6 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkSim;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -32,22 +31,20 @@ public class ElevatorSubsystem extends SubsystemBase {
         motorLeftConfig.inverted(ElevatorConstants.motorLeftInvert);
 
         motorLeftConfig.encoder
-                .positionConversionFactor(1)
-                .velocityConversionFactor(1);
+                .positionConversionFactor(0.9);
 
         motorLeftConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // Set PID values for position control. We don't need to pass a closed loop
                 // slot, as it will default to slot 0.
-                .p(0.05)
+                .p(0.4)
                 .i(0.0)
-                .d(0)
+                .d(0.0)
                 .outputRange(-1, 1)
                 // Set PID values for velocity control in slot 1
-                .p(0.0001, ClosedLoopSlot.kSlot1)
+                .p(0.1, ClosedLoopSlot.kSlot1)
                 .i(0, ClosedLoopSlot.kSlot1)
                 .d(0, ClosedLoopSlot.kSlot1)
-                .velocityFF(1.0 / 5767, ClosedLoopSlot.kSlot1)
                 .outputRange(-1, 1, ClosedLoopSlot.kSlot1);
 
         motorLeft.configure(motorLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -68,8 +65,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Elevator Left Encoder", sparkEncoderLeft.getPosition());
-        SmartDashboard.putNumber("Elevator Left Motor", motorLeft.get());
-        SmartDashboard.putNumber("Elevator Right Motor", motorRight.get());
+        SmartDashboard.putNumber("Elevator Left Motor Current", motorLeft.getOutputCurrent());
+        SmartDashboard.putNumber("Elevator Right Motor Current", motorRight.getOutputCurrent());
     }
 
     public void vStop() {
@@ -85,7 +82,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void vGoTo(double targetHeight) {
-        closedLoopControllerLeft.setReference(targetHeight, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+        if (sparkEncoderLeft.getPosition() > targetHeight) {
+            closedLoopControllerLeft.setReference(targetHeight, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+        } else {
+            closedLoopControllerLeft.setReference(targetHeight, ControlType.kPosition, ClosedLoopSlot.kSlot1);
+        }
+
     }
 
     public Command cGoTo(double targetHeight) {

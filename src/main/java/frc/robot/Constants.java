@@ -97,6 +97,7 @@ public final class Constants {
     public static final MotorType motorRightType = MotorType.kBrushed;
     public static final boolean motorLeftInvert = true;
     public static final boolean motorRightInvert = false;
+
     public static final double inSpeed = 0.5;
     public static final double outSpeed = 0.5;
   }
@@ -106,11 +107,11 @@ public final class Constants {
     public static final int motorRightCANID = 23;
     public static final MotorType motorLeftType = MotorType.kBrushed;
     public static final MotorType motorRightType = MotorType.kBrushed;
-    public static final boolean motorLeftInvert = true;
-    public static final boolean motorRightInvert = false;
+    public static final boolean motorLeftInvert = false;
+    public static final boolean motorRightInvert = true;
 
-    public static final double inSpeed = 0.5;
-    public static final double outSpeed = 0.5;
+    public static final double inSpeed = 0.35;
+    public static final double outSpeed = 0.6;
   }
 
 }
