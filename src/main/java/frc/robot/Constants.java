@@ -44,17 +44,38 @@ public final class Constants {
     public static final double WHEEL_LOCK_TIME = 10; // seconds
   }
 
-  public static class OperatorConstants {
+  public static final class driverConstants { // Logitech Gamepad F310 in X Mode
+    public static final int kJoystickPort = 0;
 
-    // Joystick Deadband
+    public static final int kAxisLeftY = 1; // Left Y Axis
+    public static final int kAxisLeftX = 0; // Left X Axis
+    public static final int kAxisRightY = 5; // Left Y Axis
+    public static final int kAxisRightX = 4; // Right X Axis
+
+    public static final int kButtonA = 1;
+    public static final int kButtonB = 2;
+    public static final int kButtonY = 4;
+    public static final int kButtonX = 3;
+
+    public static final int kButtonBack = 7;
+    public static final int kButtonStart = 8;
+
+    public static final int kButtonRightBumper = 6;
+    public static final int kButtonLeftBumper = 5;
+
+    public static final double kDeadbandAxisY = 0.05;
+    public static final double kDeadbandAxisX = 0.05;
+    public static final double kDeadBandAxisRotation = 0.05;
+
+    // USED BY YAGSL
     public static final double DEADBAND = 0.1;
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT = 6;
   }
 
-  public static final class driverConstants { // Logitech Gamepad F310 in X Mode
-    public static final int kJoystickPort = 0;
+  public static final class operatorConstants { // Logitech Gamepad F310 in X Mode
+    public static final int kJoystickPort = 1;
 
     public static final int kAxisLeftY = 1; // Left Y Axis
     public static final int kAxisLeftX = 0; // Left X Axis
@@ -80,33 +101,42 @@ public final class Constants {
   public static class ElevatorConstants {
     public static final int motorLeftCANID = 20;
     public static final int motorRightCANID = 21;
+
     public static final MotorType motorLeftType = MotorType.kBrushless;
     public static final MotorType motorRightType = MotorType.kBrushless;
+
     public static final boolean motorLeftInvert = true;
     public static final boolean motorRightInvert = true;
 
-    public static final double levelTwo = 10.00;
-    public static final double levelThree = 20.00;
-    public static final double levelFour = 30.00;
-  }
+    public static final double HEIGHT_CORAL_LEVEL_FOUR = 30.00;
+    public static final double HEIGHT_CORAL_LEVEL_THREE = 25.00;
+    public static final double HEIGHT_CORAL_LEVEL_TWO = 20.00;
+    public static final double HEIGHT_CORAL_LEVEL_ONE = 15.00;
+    public static final double HEIGHT_CORAL_INTAKE = 10.00;
+    public static final double HEIGHT_STOWED = 5.00;
+    public static final double HEIGHT_PARK = 0.00;
+    public static final double HEIGHT_NO_POWER = 0.00;
 
-  public static class AlgaeConstants {
-    public static final int motorLeftCANID = 24;
-    public static final int motorRightCANID = 25;
-    public static final MotorType motorLeftType = MotorType.kBrushed;
-    public static final MotorType motorRightType = MotorType.kBrushed;
-    public static final boolean motorLeftInvert = true;
-    public static final boolean motorRightInvert = false;
+    public static final double MOVING_UP_P = 0.4;
+    public static final double MOVING_UP_I = 0.0;
+    public static final double MOVING_UP_D = 0.0;
 
-    public static final double inSpeed = 0.5;
-    public static final double outSpeed = 0.5;
+    public static final double HOLDING_P = 0.2;
+    public static final double HOLDING_I = 0.0;
+    public static final double HOLDING_D = 0.0;
+
+    public static final double MOVING_DOWN_P = 0.1;
+    public static final double MOVING_DOWN_I = 0.0;
+    public static final double MOVING_DOWN_D = 0.0;
   }
 
   public static class CoralConstants {
     public static final int motorLeftCANID = 22;
     public static final int motorRightCANID = 23;
+
     public static final MotorType motorLeftType = MotorType.kBrushed;
     public static final MotorType motorRightType = MotorType.kBrushed;
+
     public static final boolean motorLeftInvert = false;
     public static final boolean motorRightInvert = true;
 
