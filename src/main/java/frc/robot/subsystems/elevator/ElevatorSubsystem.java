@@ -92,6 +92,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         motorLeftConfig.encoder
                 .positionConversionFactor(0.9);
 
+        motorLeftConfig.smartCurrentLimit(40);
+
         motorLeftConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // Set PID values for position control. We don't need to pass a closed loop
@@ -111,8 +113,6 @@ public class ElevatorSubsystem extends SubsystemBase {
                 .d(ElevatorConstants.MOVING_DOWN_D, ClosedLoopSlot.kSlot2)
                 .outputRange(-1, 1, ClosedLoopSlot.kSlot2);
 
-        motorLeftConfig.absoluteEncoder.inverted(true);
-
         motorLeft.configure(motorLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
         closedLoopControllerLeft = motorLeft.getClosedLoopController();
@@ -123,15 +123,18 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         motorRightConfig = new SparkMaxConfig();
 
+        motorRightConfig.smartCurrentLimit(40);
+
         motorRightConfig.follow(motorLeft, ElevatorConstants.motorRightInvert);
 
         motorRight.configure(motorRightConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
         this.currentState = ElevatorState.NO_POWER;
+        this.currentState = ElevatorState.NO_POWER;
 
         this.motorState = MotorState.MOVING_UP;
 
-        this.setDefaultCommand(Commands.run(this::periodicState, this).withName(currentState.getName()));
+        this.setDefaultCommand(Commands.run(() ->this.setWantedState(ElevatorState.NO_POWER), this));
     }
 
     @Override
@@ -148,41 +151,21 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Elevator Right Motor Current", motorRight.getOutputCurrent());
     }
 
-    public void periodicState() {
-        switch (currentState) {
-            case CORAL_LEVEL_FOUR:
-                closedLoopControllerLeft.setReference(ElevatorState.CORAL_LEVEL_FOUR.getHeight(), ControlType.kPosition,
+    public void setWantedState(ElevatorState wantedState) {
+        if (wantedState != currentState){
+            this.motorState = updateMotorState(wantedState);
+            this.currentState = wantedState;
+        }
+        if (currentState != ElevatorState.NO_POWER){
+            closedLoopControllerLeft.setReference(currentState.getHeight(), ControlType.kPosition,
                         this.motorState.getClosedLoopSlot());
-            case CORAL_LEVEL_THREE:
-                closedLoopControllerLeft.setReference(ElevatorState.CORAL_LEVEL_THREE.getHeight(),
-                        ControlType.kPosition,
-                        this.motorState.getClosedLoopSlot());
-            case CORAL_LEVEL_TWO:
-                closedLoopControllerLeft.setReference(ElevatorState.CORAL_LEVEL_TWO.getHeight(), ControlType.kPosition,
-                        this.motorState.getClosedLoopSlot());
-            case CORAL_LEVEL_ONE:
-                closedLoopControllerLeft.setReference(ElevatorState.CORAL_LEVEL_ONE.getHeight(), ControlType.kPosition,
-                        this.motorState.getClosedLoopSlot());
-            case CORAL_INTAKE:
-                closedLoopControllerLeft.setReference(ElevatorState.CORAL_INTAKE.getHeight(), ControlType.kPosition,
-                        this.motorState.getClosedLoopSlot());
-            case STOWED:
-                closedLoopControllerLeft.setReference(ElevatorState.STOWED.getHeight(), ControlType.kPosition,
-                        this.motorState.getClosedLoopSlot());
-            case PARK:
-                this.motorLeft.stopMotor();
-            case NO_POWER:
-                this.motorLeft.stopMotor();
+        } else {
+            motorLeft.stopMotor();
         }
     }
 
-    public void setWantedState(ElevatorState wantedState) {
-        this.motorState = determineMotorState(wantedState);
-        this.currentState = wantedState;
-    }
-
-    private MotorState determineMotorState(ElevatorState wantedState) {
-        if (this.leftEncoderReading < wantedState.getHeight()) {
+    private MotorState updateMotorState(ElevatorState wantedState) {
+        if (this.leftEncoderReading > wantedState.getHeight()) {
             return MotorState.MOVING_UP;
         } else {
             return MotorState.MOVING_DOWN;

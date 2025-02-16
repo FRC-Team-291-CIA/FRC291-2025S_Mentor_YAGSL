@@ -108,16 +108,16 @@ public final class Constants {
     public static final boolean motorLeftInvert = true;
     public static final boolean motorRightInvert = true;
 
-    public static final double HEIGHT_CORAL_LEVEL_FOUR = 30.00;
-    public static final double HEIGHT_CORAL_LEVEL_THREE = 25.00;
-    public static final double HEIGHT_CORAL_LEVEL_TWO = 20.00;
-    public static final double HEIGHT_CORAL_LEVEL_ONE = 15.00;
-    public static final double HEIGHT_CORAL_INTAKE = 10.00;
-    public static final double HEIGHT_STOWED = 5.00;
+    public static final double HEIGHT_CORAL_LEVEL_FOUR = -49.00; //Estimated based on manual lift. 
+    public static final double HEIGHT_CORAL_LEVEL_THREE = -24.00; //Almost worked at 25. Need a hair down.
+    public static final double HEIGHT_CORAL_LEVEL_TWO = -8.00; //Almost worked at 10. Need a hair down.
+    public static final double HEIGHT_CORAL_LEVEL_ONE = -5; //UNKOWN
+    public static final double HEIGHT_CORAL_INTAKE = -4; //UNKOWN
+    public static final double HEIGHT_STOWED = -2; //UNKOWN
     public static final double HEIGHT_PARK = 0.00;
     public static final double HEIGHT_NO_POWER = 0.00;
 
-    public static final double MOVING_UP_P = 0.4;
+    public static final double MOVING_UP_P = 0.3;
     public static final double MOVING_UP_I = 0.0;
     public static final double MOVING_UP_D = 0.0;
 
@@ -125,7 +125,7 @@ public final class Constants {
     public static final double HOLDING_I = 0.0;
     public static final double HOLDING_D = 0.0;
 
-    public static final double MOVING_DOWN_P = 0.1;
+    public static final double MOVING_DOWN_P = 0.075;
     public static final double MOVING_DOWN_I = 0.0;
     public static final double MOVING_DOWN_D = 0.0;
   }

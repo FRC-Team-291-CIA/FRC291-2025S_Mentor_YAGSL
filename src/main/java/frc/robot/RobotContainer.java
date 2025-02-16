@@ -8,7 +8,6 @@ import java.io.File;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -133,6 +132,7 @@ public class RobotContainer {
          * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick
          * Flight joysticks}.
          */
+        @SuppressWarnings("unused")
         private void configureBindings() {
                 SmartDashboard.putData(elevatorSubsystem);
 
@@ -148,9 +148,9 @@ public class RobotContainer {
                                 driveDirectAngleKeyboard);
 
                 if (RobotBase.isSimulation()) {
-                        drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
+                        drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
                 } else {
-                        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+                        drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
                 }
 
                 if (Robot.isSimulation()) {
@@ -162,40 +162,32 @@ public class RobotContainer {
 
                 driverJoystick.button(driverConstants.kButtonA).onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
-                driverJoystick.button(driverConstants.kButtonX).whileTrue(Commands.none());
-
-                driverJoystick.button(driverConstants.kButtonB).whileTrue(
-                                drivebase.driveToPose(
-                                                new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-
-                driverJoystick.button(driverConstants.kButtonStart).whileTrue(Commands.none());
-
-                driverJoystick.button(driverConstants.kButtonBack).whileTrue(coralSubsystem.cIn());
-
                 driverJoystick.button(driverConstants.kButtonLeftBumper)
                                 .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
                 driverJoystick.button(driverConstants.kButtonRightBumper).whileTrue(coralSubsystem.cOut());
 
                 operatorJoystick.button(operatorConstants.kButtonA)
-                                .onTrue(Commands.runOnce(
+                                .whileTrue(Commands.run(
                                                 () -> elevatorSubsystem.setWantedState(ElevatorState.CORAL_INTAKE)));
 
                 operatorJoystick.button(operatorConstants.kButtonB)
-                                .onTrue(Commands.runOnce(
+                                .whileTrue(Commands.run(
                                                 () -> elevatorSubsystem.setWantedState(ElevatorState.CORAL_LEVEL_TWO)));
 
                 operatorJoystick.button(operatorConstants.kButtonY)
-                                .onTrue(Commands.runOnce(() -> elevatorSubsystem
+                                .whileTrue(Commands.run(() -> elevatorSubsystem
                                                 .setWantedState(ElevatorState.CORAL_LEVEL_THREE)));
 
                 operatorJoystick.button(operatorConstants.kButtonX)
-                                .onTrue(Commands.runOnce(() -> elevatorSubsystem
+                                .whileTrue(Commands.run(() -> elevatorSubsystem
                                                 .setWantedState(ElevatorState.CORAL_LEVEL_FOUR)));
-
-                operatorJoystick.button(operatorConstants.kButtonBack)
-                                .onTrue(Commands.runOnce(
-                                                () -> elevatorSubsystem.setWantedState(ElevatorState.NO_POWER)));
+                                                
+                operatorJoystick.button(operatorConstants.kButtonLeftBumper)
+                                .whileTrue(Commands.run(coralSubsystem::vIn));
+                
+                operatorJoystick.button(operatorConstants.kButtonRightBumper)
+                                .whileTrue(Commands.run(coralSubsystem::vOut));
         }
 
         /**
@@ -210,5 +202,9 @@ public class RobotContainer {
 
         public void setMotorBrake(boolean brake) {
                 drivebase.setMotorBrake(brake);
+        }
+
+        public void zeroGyro() {
+                drivebase.zeroGyro();
         }
 }
