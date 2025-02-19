@@ -1,0 +1,204 @@
+/*
+For every Json file we will be making a txt file to comment that is going on in the json files.
+
+Please go through each json and comment so others can understand.
+*/
+
+{ "HALProvider": 
+
+  { "Other Devices": 
+  
+  {//this does something idk
+    //spark max
+    "SPARK MAX [20]": { 
+    
+      "header": { 
+        "open": true 
+      } 
+    },
+    
+    //spark max 
+    "SPARK MAX [21]": {
+      "header": { "open": true }
+    },
+
+     //spark max
+      "SPARK MAX [2]": {
+        "header": {
+          "open": true
+        }
+      },
+      
+      //spark max
+      "SPARK MAX [4]": {
+        "header": {
+          "open": true
+        }
+      },
+
+      //spark max
+      "SPARK MAX [5]": {
+        "header": {
+          "open": true
+        }
+      },
+      //spark max
+      "SPARK MAX [7]": {
+        "header": {
+          "open": true
+        }
+      },
+
+      
+      "Talon FX (v6)[2]/Rotor Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+
+      
+      "Talon FX (v6)[51]": {
+        "header": {
+          "open": true
+        }
+      },
+
+      
+      "Talon FX[50]": {
+        "header": {
+          "open": true
+        }
+      },
+
+      
+      "Talon FX[51]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+
+      
+      "Talon FX[52]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+
+      
+      "Talon FX[8]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      }
+
+      
+    }//closes spark max[20]
+
+    
+  },   //this goes with other devices
+
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/SwerveSubsystem": "Subsystem",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/Pigeon 2 [13]": "Gyro",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/SmartDashboard/Alerts": "Alerts",
+      "/SmartDashboard/ElevatorSubsystem": "Subsystem",
+      "/SmartDashboard/Encoders": "Alerts",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/IMU": "Alerts",
+      "/SmartDashboard/JSON": "Alerts",
+      "/SmartDashboard/Motors": "Alerts",
+      "/SmartDashboard/Pigeon 2 (v6) [0]": "Gyro",
+      "/SmartDashboard/Pigeon 2 (v6) [13]": "Gyro",
+      "/SmartDashboard/Pigeon 2 (v6) [18]": "Gyro",
+      "/SmartDashboard/Pigeon 2 [13]": "Gyro",
+      "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/Swerve Drive": "Alerts",
+      "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d",
+      "/SmartDashboard/navX-Sensor[1]": "Gyro",
+      "/SmartDashboard/navX-Sensor[4]": "Gyro"
+    },
+
+    
+    "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Field": {
+        "OdometryPose": {
+          "arrowColor": [
+            255.0,
+            255.0,
+            0.0,
+            255.0
+          ],
+          "color": [
+            224.99996948242188,
+            0.0,
+            255.0,
+            255.0
+          ]
+        },
+        "XModules": {
+          "arrowColor": [
+            0.09611687064170837,
+            0.17414122819900513,
+            0.9803921580314636,
+            255.0
+          ],
+          "arrowSize": 33,
+          "arrowWeight": 3.0,
+          "style": "Hidden"
+        },
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        "open": true
+      },
+      "SmartDashboard": {
+        "ElevatorSubsystem": {
+          "open": true
+        },
+        "IMU": {
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "Clients": {
+      "open": true
+    },
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "Publishers": {
+        "open": true
+      },
+      "Subscribers": {
+        "open": true
+      },
+      "open": true
+    },
+    "visible": true
+  }
+}
