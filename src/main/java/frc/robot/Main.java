@@ -24,6 +24,8 @@ public final class Main {
    * If you change your main robot class, change the parameter type.
    */
   public static void main(String... args) {
+    //I believe robotBase is coming from the frc.robot package.
+    //this allows us to call startRobot() and pass a robot object through parameters
     RobotBase.startRobot(Robot::new);
   }
 }
