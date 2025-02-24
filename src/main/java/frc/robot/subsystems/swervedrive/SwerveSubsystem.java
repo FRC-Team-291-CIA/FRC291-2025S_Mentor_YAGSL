@@ -97,7 +97,7 @@ public class SwerveSubsystem extends SubsystemBase {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via
+    swerveDrive.setHeadingCorrection(false); // Heading corretion schould only be used while controlling the robot via
                                              // angle.
     swerveDrive.setCosineCompensator(false);// !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for
                                             // simulations since it causes discrepancies not seen in real life.
@@ -108,7 +108,7 @@ public class SwerveSubsystem extends SubsystemBase {
     swerveDrive.setModuleEncoderAutoSynchronize(false,
         1); // Enable if you want to resynchronize your absolute encoders and motor encoders
             // periodically when they are not moving.
-    // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used
+    //swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used
     // over the internal encoder and push the offsets onto it. Throws warning if not
     // possible
     if (visionDriveTest) {
@@ -117,7 +117,7 @@ public class SwerveSubsystem extends SubsystemBase {
       // updates better.
       swerveDrive.stopOdometryThread();
     }
-    setupPathPlanner();
+   // setupPathPlanner();
   }
 
   /**

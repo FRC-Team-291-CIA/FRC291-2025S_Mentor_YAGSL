@@ -31,6 +31,8 @@ import frc.robot.subsystems.coral.CoralSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorState;
 
+import frc.robot.subsystems.BotTest.BotTestSubsystem;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very
@@ -139,13 +141,10 @@ public class RobotContainer {
                 Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
                 Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
                 Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
-                Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(
-                                driveDirectAngle);
+                Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngle);
                 Command driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard);
-                Command driveFieldOrientedAnglularVelocityKeyboard = drivebase
-                                .driveFieldOriented(driveAngularVelocityKeyboard);
-                Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(
-                                driveDirectAngleKeyboard);
+                Command driveFieldOrientedAnglularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
+                Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
                 if (RobotBase.isSimulation()) {
                         drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
