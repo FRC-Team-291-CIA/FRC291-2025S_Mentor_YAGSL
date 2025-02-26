@@ -31,8 +31,6 @@ import frc.robot.subsystems.coral.CoralSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorState;
 
-import frc.robot.subsystems.BotTest.BotTestSubsystem;
-
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very
@@ -143,8 +141,10 @@ public class RobotContainer {
                 Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
                 Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngle);
                 Command driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard);
-                Command driveFieldOrientedAnglularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
-                Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
+                Command driveFieldOrientedAnglularVelocityKeyboard = drivebase
+                                .driveFieldOriented(driveAngularVelocityKeyboard);
+                Command driveSetpointGenKeyboard = drivebase
+                                .driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
                 if (RobotBase.isSimulation()) {
                         drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
@@ -181,10 +181,10 @@ public class RobotContainer {
                 operatorJoystick.button(operatorConstants.kButtonX)
                                 .whileTrue(Commands.run(() -> elevatorSubsystem
                                                 .setWantedState(ElevatorState.CORAL_LEVEL_FOUR)));
-                                                
+
                 operatorJoystick.button(operatorConstants.kButtonLeftBumper)
                                 .whileTrue(Commands.run(coralSubsystem::vIn));
-                
+
                 operatorJoystick.button(operatorConstants.kButtonRightBumper)
                                 .whileTrue(Commands.run(coralSubsystem::vOut));
         }
