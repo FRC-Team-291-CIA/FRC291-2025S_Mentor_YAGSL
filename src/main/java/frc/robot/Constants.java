@@ -27,7 +27,7 @@ public final class Constants {
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED = Units.feetToMeters(14.5);
+  public static final double MAX_SPEED = Units.feetToMeters(7.25);
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
   // public static final class AutonConstants
@@ -74,24 +74,27 @@ public final class Constants {
     public static final double TURN_CONSTANT = 6;
   }
 
-  public static final class operatorConstants { // Logitech Gamepad F310 in X Mode
+  public static final class operatorConstants { // Logitech Gamepad F310 in D Mode
     public static final int kJoystickPort = 1;
 
     public static final int kAxisLeftY = 1; // Left Y Axis
     public static final int kAxisLeftX = 0; // Left X Axis
-    public static final int kAxisRightY = 5; // Left Y Axis
-    public static final int kAxisRightX = 4; // Right X Axis
+    public static final int kAxisRightY = 3; // Left Y Axis
+    public static final int kAxisRightX = 2; // Right X Axis
 
-    public static final int kButtonA = 1;
-    public static final int kButtonB = 2;
+    public static final int kButtonA = 2;
+    public static final int kButtonB = 3;
     public static final int kButtonY = 4;
-    public static final int kButtonX = 3;
+    public static final int kButtonX = 1;
 
-    public static final int kButtonBack = 7;
-    public static final int kButtonStart = 8;
+    public static final int kButtonBack = 9;
+    public static final int kButtonStart = 10;
 
-    public static final int kButtonRightBumper = 6;
-    public static final int kButtonLeftBumper = 5;
+    public static final int kButtonTopRightBumper = 6;
+    public static final int kButtonTopLeftBumper = 5;
+
+    public static final int kButtonBottomRightBumper = 8;
+    public static final int kButtonBottomLeftBumper = 7;
 
     public static final double kDeadbandAxisY = 0.05;
     public static final double kDeadbandAxisX = 0.05;
@@ -108,26 +111,18 @@ public final class Constants {
     public static final boolean motorLeftInvert = true;
     public static final boolean motorRightInvert = true;
 
-    public static final double HEIGHT_CORAL_LEVEL_FOUR = -49.00; //Estimated based on manual lift. 
-    public static final double HEIGHT_CORAL_LEVEL_THREE = -24.00; //Almost worked at 25. Need a hair down.
-    public static final double HEIGHT_CORAL_LEVEL_TWO = -8.00; //Almost worked at 10. Need a hair down.
-    public static final double HEIGHT_CORAL_LEVEL_ONE = -5; //UNKOWN
-    public static final double HEIGHT_CORAL_INTAKE = -4; //UNKOWN
-    public static final double HEIGHT_STOWED = -2; //UNKOWN
+    public static final double HEIGHT_CORAL_LEVEL_FOUR = -52.2; // Estimated based on manual lift.
+    public static final double HEIGHT_CORAL_LEVEL_THREE = -28.00; // Almost worked at 25. Need a hair down.
+    public static final double HEIGHT_CORAL_LEVEL_TWO = -12.00; // Almost worked at 10. Need a hair down.
+    public static final double HEIGHT_CORAL_LEVEL_ONE = -5; // UNKOWN
+    public static final double HEIGHT_CORAL_INTAKE = -0.25; // UNKOWN
+    public static final double HEIGHT_STOWED = -0.5; // UNKOWN
     public static final double HEIGHT_PARK = 0.00;
     public static final double HEIGHT_NO_POWER = 0.00;
 
-    public static final double MOVING_UP_P = 0.3;
-    public static final double MOVING_UP_I = 0.0;
-    public static final double MOVING_UP_D = 0.0;
-
-    public static final double HOLDING_P = 0.2;
-    public static final double HOLDING_I = 0.0;
-    public static final double HOLDING_D = 0.0;
-
-    public static final double MOVING_DOWN_P = 0.075;
-    public static final double MOVING_DOWN_I = 0.0;
-    public static final double MOVING_DOWN_D = 0.0;
+    public static final double P = 0.5;
+    public static final double I = 0.0;
+    public static final double D = 0.0;
   }
 
   public static class CoralConstants {
@@ -140,8 +135,15 @@ public final class Constants {
     public static final boolean motorLeftInvert = false;
     public static final boolean motorRightInvert = true;
 
-    public static final double inSpeed = 0.35;
-    public static final double outSpeed = 0.6;
+    public static final double inSpeed = 0.4;
+    public static final double outSpeed = 1;
+  }
+
+  public static final class FrontFlapConstants {
+    public static final int motorCANID = 24;
+    public static final MotorType motorType = MotorType.kBrushed;
+    public static final boolean motorInvert = false;
+    public static final double speed = 0.5;
   }
 
 }

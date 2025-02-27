@@ -26,8 +26,8 @@ import frc.robot.Constants.driverConstants;
 import frc.robot.Constants.operatorConstants;
 
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import frc.robot.subsystems.coral.CoralSubsystem;
-
+import frc.robot.subsystems.coraldelivery.CoralDeliverySubsystem;
+import frc.robot.subsystems.frontflap.FrontFlatSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorState;
 
@@ -50,15 +50,17 @@ public class RobotContainer {
 
         private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
-        private final CoralSubsystem coralSubsystem = new CoralSubsystem();
+        private final CoralDeliverySubsystem coralSubsystem = new CoralDeliverySubsystem();
+
+        private final FrontFlatSubsystem frontFlapSubsystem = new FrontFlatSubsystem();
 
         /**
          * Converts driver input into a field-relative ChassisSpeeds that is controlled
          * by angular velocity.
          */
         SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                        () -> driverJoystick.getHID().getRawAxis(driverConstants.kAxisLeftY) * -1,
-                        () -> driverJoystick.getHID().getRawAxis(driverConstants.kAxisLeftX) * -1)
+                        () -> driverJoystick.getHID().getRawAxis(driverConstants.kAxisLeftY) * 1,
+                        () -> driverJoystick.getHID().getRawAxis(driverConstants.kAxisLeftX) * 1)
                         .withControllerRotationAxis(
                                         () -> driverJoystick.getHID().getRawAxis(driverConstants.kAxisRightX) * -1)
                         .deadband(
@@ -149,7 +151,7 @@ public class RobotContainer {
                 if (RobotBase.isSimulation()) {
                         drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
                 } else {
-                        drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
+                        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
                 }
 
                 if (Robot.isSimulation()) {
@@ -182,11 +184,21 @@ public class RobotContainer {
                                 .whileTrue(Commands.run(() -> elevatorSubsystem
                                                 .setWantedState(ElevatorState.CORAL_LEVEL_FOUR)));
 
-                operatorJoystick.button(operatorConstants.kButtonLeftBumper)
+                operatorJoystick.button(operatorConstants.kButtonStart)
+                                .whileTrue(Commands.run(() -> elevatorSubsystem
+                                                .setWantedState(ElevatorState.NO_POWER)));
+
+                operatorJoystick.button(operatorConstants.kButtonTopLeftBumper)
                                 .whileTrue(Commands.run(coralSubsystem::vIn));
 
-                operatorJoystick.button(operatorConstants.kButtonRightBumper)
+                operatorJoystick.button(operatorConstants.kButtonTopRightBumper)
                                 .whileTrue(Commands.run(coralSubsystem::vOut));
+
+                operatorJoystick.button(operatorConstants.kButtonBottomLeftBumper)
+                                .whileTrue(Commands.run(frontFlapSubsystem::vUp));
+
+                operatorJoystick.button(operatorConstants.kButtonBottomRightBumper)
+                                .whileTrue(Commands.run(frontFlapSubsystem::vDown));
         }
 
         /**

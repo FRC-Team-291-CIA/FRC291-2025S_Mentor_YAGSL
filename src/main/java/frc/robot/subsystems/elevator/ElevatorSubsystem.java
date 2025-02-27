@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.trajectory.constraint.MaxVelocityConstraint;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -60,7 +61,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private enum MotorState {
         MOVING_UP(ClosedLoopSlot.kSlot0, "MOVING UP"),
         HOLDING(ClosedLoopSlot.kSlot1, "HOLDING"),
-        MOVING_DOWN(ClosedLoopSlot.kSlot2, "MOVING DOWN");
+        MOVING_DOWN(ClosedLoopSlot.kSlot0, "MOVING DOWN");
 
         private final ClosedLoopSlot closedLoopSlot;
         private final String name;
@@ -89,8 +90,17 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         motorLeftConfig.inverted(ElevatorConstants.motorLeftInvert);
 
+        // Calculated Conversation Factor
+        // (12 Motor Revelutions / 1 Motor Bar Revlution)
+        // * (4.5 Motor Bar Revolutions / 51 Inches)
+        // = (54 Motor Revultions / 51 Inches)
+        // = 18 Motor Revolutions = 17 Inch or 17/18 Motor Revolutions = 1 Inch
+
+        double motorRevolutionsPerInch = (17.0 / 18.0);
+
         motorLeftConfig.encoder
-                .positionConversionFactor(0.9);
+                .positionConversionFactor(motorRevolutionsPerInch)
+                .velocityConversionFactor(motorRevolutionsPerInch);
 
         motorLeftConfig.smartCurrentLimit(40);
 
@@ -98,20 +108,14 @@ public class ElevatorSubsystem extends SubsystemBase {
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // Set PID values for position control. We don't need to pass a closed loop
                 // slot, as it will default to slot 0.
-                .p(ElevatorConstants.MOVING_UP_P, ClosedLoopSlot.kSlot0)
-                .i(ElevatorConstants.MOVING_UP_I, ClosedLoopSlot.kSlot0)
-                .d(ElevatorConstants.MOVING_UP_D, ClosedLoopSlot.kSlot0)
-                .outputRange(-1, 1, ClosedLoopSlot.kSlot0)
-                // Set PID values for velocity control in slot 1
-                .p(ElevatorConstants.HOLDING_P, ClosedLoopSlot.kSlot1)
-                .i(ElevatorConstants.HOLDING_I, ClosedLoopSlot.kSlot1)
-                .d(ElevatorConstants.HOLDING_D, ClosedLoopSlot.kSlot1)
-                .outputRange(-1, 1, ClosedLoopSlot.kSlot1)
+                .p(ElevatorConstants.P, ClosedLoopSlot.kSlot0)
+                .i(ElevatorConstants.I, ClosedLoopSlot.kSlot0)
+                .d(ElevatorConstants.D, ClosedLoopSlot.kSlot0)
+                .outputRange(-1, 1, ClosedLoopSlot.kSlot0);
 
-                .p(ElevatorConstants.MOVING_DOWN_P, ClosedLoopSlot.kSlot2)
-                .i(ElevatorConstants.MOVING_DOWN_I, ClosedLoopSlot.kSlot2)
-                .d(ElevatorConstants.MOVING_DOWN_D, ClosedLoopSlot.kSlot2)
-                .outputRange(-1, 1, ClosedLoopSlot.kSlot2);
+        motorLeftConfig.closedLoop.maxMotion
+                .maxAcceleration(960, ClosedLoopSlot.kSlot0)
+                .maxVelocity(2880, ClosedLoopSlot.kSlot0);
 
         motorLeft.configure(motorLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
@@ -130,11 +134,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         motorRight.configure(motorRightConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
         this.currentState = ElevatorState.NO_POWER;
-        this.currentState = ElevatorState.NO_POWER;
 
         this.motorState = MotorState.MOVING_UP;
 
-        this.setDefaultCommand(Commands.run(() ->this.setWantedState(ElevatorState.NO_POWER), this));
+        this.setDefaultCommand(Commands.run(() -> this.setWantedState(currentState), this));
     }
 
     @Override
@@ -152,13 +155,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void setWantedState(ElevatorState wantedState) {
-        if (wantedState != currentState){
+        if (wantedState != currentState) {
             this.motorState = updateMotorState(wantedState);
             this.currentState = wantedState;
         }
-        if (currentState != ElevatorState.NO_POWER){
-            closedLoopControllerLeft.setReference(currentState.getHeight(), ControlType.kPosition,
-                        this.motorState.getClosedLoopSlot());
+        if (currentState != ElevatorState.NO_POWER) {
+            closedLoopControllerLeft.setReference(currentState.getHeight(), ControlType.kMAXMotionPositionControl,
+                    this.motorState.getClosedLoopSlot());
         } else {
             motorLeft.stopMotor();
         }

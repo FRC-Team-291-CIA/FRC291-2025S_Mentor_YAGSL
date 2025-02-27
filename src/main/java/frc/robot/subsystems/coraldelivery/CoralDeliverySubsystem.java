@@ -1,24 +1,28 @@
-package frc.robot.subsystems.coral;
+package frc.robot.subsystems.coraldelivery;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants.CoralConstants;
 
-public class CoralSubsystem extends SubsystemBase {
+public class CoralDeliverySubsystem extends SubsystemBase {
 
     private SparkMax motorLeft, motorRight;
 
     private SparkMaxConfig motorLeftConfig, motorRightConfig;
 
-    public CoralSubsystem() {
+    private DigitalInput breakBeam;
+
+    public CoralDeliverySubsystem() {
         motorLeft = new SparkMax(CoralConstants.motorLeftCANID, CoralConstants.motorLeftType);
         motorRight = new SparkMax(CoralConstants.motorRightCANID, CoralConstants.motorRightType);
-    
+
         motorLeftConfig = new SparkMaxConfig();
         motorRightConfig = new SparkMaxConfig();
 
