@@ -90,13 +90,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         motorLeftConfig.inverted(ElevatorConstants.motorLeftInvert);
 
-        // Calculated Conversation Factor
-        // (12 Motor Revelutions / 1 Motor Bar Revlution)
-        // * (4.5 Motor Bar Revolutions / 51 Inches)
-        // = (54 Motor Revultions / 51 Inches)
-        // = 18 Motor Revolutions = 17 Inch or 17/18 Motor Revolutions = 1 Inch
-
-        double motorRevolutionsPerInch = (17.0 / 18.0);
+        double motorRevolutionsPerInch = (4335.00 / 4698.00);
 
         motorLeftConfig.encoder
                 .positionConversionFactor(motorRevolutionsPerInch)
