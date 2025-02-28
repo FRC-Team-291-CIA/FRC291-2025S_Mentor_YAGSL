@@ -65,7 +65,7 @@ public class CoralDeliverySubsystem extends SubsystemBase {
         motorLeft.set(CoralConstants.outSpeed);
         motorRight.set(CoralConstants.outSpeed);
     }
-
+    
     public Command cOut() {
         return run(
                 () -> {
