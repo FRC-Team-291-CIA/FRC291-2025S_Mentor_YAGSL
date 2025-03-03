@@ -1,16 +1,6 @@
 {
   "HALProvider": {
     "Other Devices": {
-      "SPARK MAX [20]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [21]": {
-        "header": {
-          "open": true
-        }
-      },
       "SPARK MAX [2]": {
         "header": {
           "open": true
@@ -70,16 +60,12 @@
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/Pigeon 2 [13]": "Gyro",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
-      "/SmartDashboard/Alerts": "Alerts",
-      "/SmartDashboard/ElevatorSubsystem": "Subsystem",
       "/SmartDashboard/Encoders": "Alerts",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/IMU": "Alerts",
       "/SmartDashboard/JSON": "Alerts",
       "/SmartDashboard/Motors": "Alerts",
-      "/SmartDashboard/Pigeon 2 (v6) [0]": "Gyro",
       "/SmartDashboard/Pigeon 2 (v6) [13]": "Gyro",
-      "/SmartDashboard/Pigeon 2 (v6) [18]": "Gyro",
       "/SmartDashboard/Pigeon 2 [13]": "Gyro",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/Swerve Drive": "Alerts",
@@ -133,36 +119,21 @@
   },
   "NetworkTables": {
     "transitory": {
-      "Shuffleboard": {
+      "FMSInfo": {
         "open": true
       },
       "SmartDashboard": {
-        "ElevatorSubsystem": {
+        "Field": {
           "open": true
         },
-        "IMU": {
+        "open": true,
+        "swerve": {
           "open": true
-        },
-        "open": true
+        }
       }
     }
   },
   "NetworkTables Info": {
-    "Clients": {
-      "open": true
-    },
-    "Connections": {
-      "open": true
-    },
-    "Server": {
-      "Publishers": {
-        "open": true
-      },
-      "Subscribers": {
-        "open": true
-      },
-      "open": true
-    },
     "visible": true
   }
 }
