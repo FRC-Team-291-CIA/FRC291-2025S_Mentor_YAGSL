@@ -59,8 +59,8 @@ public class RobotContainer {
          * by angular velocity.
          */
         SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                        () -> driverJoystick.getHID().getRawAxis(driverConstants.kAxisLeftY) * 1,
-                        () -> driverJoystick.getHID().getRawAxis(driverConstants.kAxisLeftX) * 1)
+                        () -> driverJoystick.getHID().getRawAxis(driverConstants.kAxisLeftY) * -1,
+                        () -> driverJoystick.getHID().getRawAxis(driverConstants.kAxisLeftX) * -1)
                         .withControllerRotationAxis(
                                         () -> driverJoystick.getHID().getRawAxis(driverConstants.kAxisRightX) * -1)
                         .deadband(
