@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
-public class IntakeCoralCommand {
+import edu.wpi.first.wpilibj2.command.Command;
+
+public class IntakeCoralCommand extends Command {
 
 }

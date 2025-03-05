@@ -43,6 +43,10 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve"));
 
+  private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
+  private final CoralSubsystem m_coralSubsystem = new CoralSubsystem();
+  private final FlapSubsystem n_flapSubsystem = new FlapSubsystem();
+
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled
    * by angular velocity.

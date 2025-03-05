@@ -9,6 +9,7 @@ import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -27,7 +28,7 @@ public final class Constants {
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED = Units.feetToMeters(14.5);
+  public static final double MAX_SPEED = Units.feetToMeters(14.50);
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
   // public static final class AutonConstants
@@ -41,16 +42,16 @@ public final class Constants {
   public static final class DrivebaseConstants {
 
     // Hold time on motor brakes when disabled
-    public static final double WHEEL_LOCK_TIME = 10; // seconds
+    public static final double WHEEL_LOCK_TIME = 10.00; // seconds
   }
 
   public static class OperatorConstants {
 
     // Joystick Deadband
-    public static final double DEADBAND = 0.1;
-    public static final double LEFT_Y_DEADBAND = 0.1;
-    public static final double RIGHT_X_DEADBAND = 0.1;
-    public static final double TURN_CONSTANT = 6;
+    public static final double DEADBAND = 0.10;
+    public static final double LEFT_Y_DEADBAND = 0.10;
+    public static final double RIGHT_X_DEADBAND = 0.10;
+    public static final double TURN_CONSTANT = 6.00;
   }
 
   public static class ControllerDriverConstants { // Logitech Gamepad F310 in X Mode
@@ -114,26 +115,52 @@ public final class Constants {
     public static final MotorType MOTOR_RIGHT_TYPE = MotorType.kBrushless;
     public static final boolean MOTOR_RIGHT_IS_INVERTED = true;
 
-    public static final double SLOT_ZERO_P = 0.5;
-    public static final double SLOT_ZERO_I = 0.0;
-    public static final double SLOT_ZERO_D = 0.0;
-    public static final double SLOT_ZERO_F = 0.0;
+    public static final double MOTOR_REVOLUTION_PER_INCH = (4335.00 / 4698.00);
+    public static final int MOTOR_SMART_CURRENT_LIMIT = 40;
 
-    public static final double HEIGHT_CORAL_LEVEL_FOUR = -52.2; // Estimated based on manual lift.
+    public static final double SLOT_ZERO_P = 0.50;
+    public static final double SLOT_ZERO_I = 0.00;
+    public static final double SLOT_ZERO_D = 0.00;
+    public static final double SLOT_ZERO_FF = 0.00;
+    public static final ArbFFUnits SLOT_ZERO_FF_UNITS = ArbFFUnits.kPercentOut;
+    public static final double SLOT_ZERO_MAX_ACCELERATION = 0.00;
+    public static final double SLOT_ZERO_MAX_VELOCITY = 0.00;
+
+    public static final double SLOT_ONE_P = 0.25;
+    public static final double SLOT_ONE_I = 0.00;
+    public static final double SLOT_ONE_D = 0.00;
+    public static final double SLOT_ONE_FF = 0.00;
+    public static final ArbFFUnits SLOT_ONE_FF_UNITS = ArbFFUnits.kPercentOut;
+    public static final double SLOT_ONE_MAX_ACCELERATION = 0.00;
+    public static final double SLOT_ONE_MAX_VELOCITY = 0.00;
+
+    public static final double HEIGHT_CORAL_LEVEL_FOUR = -52.20; // Estimated based on manual lift.
     public static final double HEIGHT_CORAL_LEVEL_THREE = -28.00; // Almost worked at 25. Need a hair down.
     public static final double HEIGHT_CORAL_LEVEL_TWO = -12.00; // Almost worked at 10. Need a hair down.
-    public static final double HEIGHT_CORAL_LEVEL_ONE = -5; // UNKOWN
+    public static final double HEIGHT_CORAL_LEVEL_ONE = -5.00; // UNKOWN
     public static final double HEIGHT_CORAL_INTAKE = -0.25; // UNKOWN
-    public static final double HEIGHT_STOWED = -0.5; // UNKOWN
-    public static final double HEIGHT_NO_POWER = 0.00;
+    public static final double HEIGHT_PARK = 0.00;
+    public static final double HEIGHT_KILL_POWER = Double.NaN;
+    public static final double HEIGHT_DISABLED = Double.NaN;
   }
 
   public static class CoralConstants {
+    public static final int MOTOR_LEFT_CANID = 22;
+    public static final MotorType MOTOR_LEFT_TYPE = MotorType.kBrushed;
+    public static final boolean MOTOR_LEFT_IS_INVERTED = false;
 
+    public static final int MOTOR_RIGHT_CANID = 23;
+    public static final MotorType MOTOR_RIGHT_TYPE = MotorType.kBrushed;
+    public static final boolean MOTOR_RIGHT_IS_INVERTED = true;
+
+    public static final int INTAKE_SENSOR_DIOPORT = 0;
+    public static final boolean INTAKE_SENSOR_IS_INVERTED = false;
   }
 
   public static class FlapConstants {
-
+    public static final int MOTOR_CANID = 24;
+    public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
+    public static final boolean MOTOR_IS_INVERTED = false;
   }
 
 }
