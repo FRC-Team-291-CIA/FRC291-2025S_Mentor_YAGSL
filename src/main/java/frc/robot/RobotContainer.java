@@ -209,6 +209,8 @@ public class RobotContainer {
         public Command getAutonomousCommand() {
                 // An example command will be run in autonomous
                 return drivebase.getAutonomousCommand("New Auto");
+                // drivebase.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
+                // return drivebase.driveToPose(new Pose2d(1.0, 0, new Rotation2d()));
         }
 
         public void setMotorBrake(boolean brake) {
