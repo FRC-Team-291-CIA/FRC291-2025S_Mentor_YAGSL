@@ -1,0 +1,44 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="SendableChooser[0]" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="14" y="39"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="0" y="0"/>
+		<width>1146</width>
+		<property name="Graphics" value="Simple"/>
+	</static-widget>
+	<widget field="Pigeon 2 (v6) [18]" type="Gyro" class="edu.wpi.first.smartdashboard.gui.elements.Compass">
+		<location x="190" y="41"/>
+	</widget>
+	<widget field="Intake Sensor Value" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="457" y="39"/>
+	</widget>
+	<widget field="Angle Encoder Reading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="702" y="67"/>
+	</widget>
+	<widget field="Flap State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="767" y="39"/>
+	</widget>
+	<widget field="Elevator Encoder Reading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="929" y="39"/>
+	</widget>
+	<widget field="Motor State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="997" y="90"/>
+	</widget>
+	<widget field="Elevator State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="986" y="65"/>
+		<height>20</height>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+	<hidden field="IMU"/>
+	<hidden field="Field"/>
+	<hidden field="Swerve Drive"/>
+	<hidden field="Motors"/>
+	<hidden field="JSON"/>
+	<hidden field="Alerts"/>
+	<hidden field="PathPlanner"/>
+	<hidden field="Encoders"/>
+</xml>

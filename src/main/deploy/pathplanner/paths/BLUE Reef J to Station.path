@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.135369318181818,
+        "y": 5.645383522727273
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.303261555349655,
+        "y": 6.098360262626074
+      },
+      "isLocked": false,
+      "linkedName": "REEF J"
+    },
+    {
+      "anchor": {
+        "x": 1.5755113636363638,
+        "y": 7.141122159090909
+      },
+      "prevControl": {
+        "x": 2.3257587262181945,
+        "y": 6.798005229312722
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Station Left"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -50.86960044301466
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -119.99999999999999
+  },
+  "useDefaultConstraints": true
+}
