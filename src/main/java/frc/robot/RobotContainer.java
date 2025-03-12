@@ -28,6 +28,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import frc.robot.Constants.ControllerDriverConstants;
 import frc.robot.Constants.ControllerOperatorConstants;
+import frc.robot.Constants.FlapConstants;
 import frc.robot.commands.IntakeCoralCommand;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
@@ -257,15 +258,29 @@ public class RobotContainer {
                                         .runOnce(() -> m_elevatorSubsystem
                                                         .setWantedState(ElevatorState.NO_POWER)));
                         // Flap
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_BOTTOM_LEFT)
-                                        .onTrue(Commands
-                                                        .runOnce(() -> m_flapSubsystem
-                                                                        .setWantedState(FlapState.DOWN)));
 
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_BOTTOM_RIGHT)
-                                        .onTrue(Commands
-                                                        .runOnce(() -> m_flapSubsystem
-                                                                        .setWantedState(FlapState.UP)));
+                        if (FlapConstants.TEST_STATE_BASED) {
+                                controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_BOTTOM_LEFT)
+                                                .onTrue(Commands
+                                                                .runOnce(() -> m_flapSubsystem
+                                                                                .setWantedState(FlapState.DOWN)));
+
+                                controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_BOTTOM_RIGHT)
+                                                .onTrue(Commands
+                                                                .runOnce(() -> m_flapSubsystem
+                                                                                .setWantedState(FlapState.UP)));
+
+                        } else {
+                                controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_BOTTOM_LEFT)
+                                                .whileTrue(Commands
+                                                                .run(() -> m_flapSubsystem
+                                                                                .setWantedState(FlapState.DOWN)));
+
+                                controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_BOTTOM_RIGHT)
+                                                .whileTrue(Commands
+                                                                .run(() -> m_flapSubsystem
+                                                                                .setWantedState(FlapState.UP)));
+                        }
 
                         // Coral
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_TOP_LEFT).whileTrue(

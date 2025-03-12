@@ -50,6 +50,8 @@ public class CoralSubsystem extends SubsystemBase {
 
         // Initialize intake sensor
         m_intakeSensor = new DigitalInput(CoralConstants.INTAKE_SENSOR_DIOPORT);
+
+        this.setDefaultCommand(new RunCommand(() -> this.STOPPED(), this));
     }
 
     // Override periodic method to update intake sensor value
@@ -85,6 +87,10 @@ public class CoralSubsystem extends SubsystemBase {
     // Method to set the motor speed
     public void setSpeed(double newSpeed) {
         m_motorLeft.set(newSpeed);
+    }
+
+    public Command STOPPED() {
+        return new RunCommand(() -> m_motorLeft.stopMotor(), this);
     }
 
     // Command to move coral forward at a slow speed

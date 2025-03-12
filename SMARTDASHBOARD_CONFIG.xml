@@ -1,34 +1,54 @@
 <xml version="1.0">
 <dashboard>
-	<widget field="SendableChooser[0]" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="14" y="39"/>
-	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
-		<location x="0" y="0"/>
-		<width>1146</width>
-		<property name="Graphics" value="Simple"/>
+		<location x="972" y="0"/>
+		<height>517</height>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="5" y="489"/>
+		<width>998</width>
+		<height>30</height>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="2" y="1"/>
+		<height>517</height>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="0" y="-2"/>
+		<width>974</width>
 	</static-widget>
 	<widget field="Pigeon 2 (v6) [18]" type="Gyro" class="edu.wpi.first.smartdashboard.gui.elements.Compass">
-		<location x="190" y="41"/>
+		<location x="41" y="336"/>
+	</widget>
+	<widget field="SendableChooser[0]" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="38" y="38"/>
 	</widget>
 	<widget field="Intake Sensor Value" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="457" y="39"/>
+		<location x="290" y="42"/>
 	</widget>
-	<widget field="Angle Encoder Reading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="702" y="67"/>
+	<widget field="Elevator Motor Left Amps" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="757" y="136"/>
 	</widget>
-	<widget field="Flap State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="767" y="39"/>
+	<widget field="Elevator Motor Right Amps" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="751" y="162"/>
 	</widget>
 	<widget field="Elevator Encoder Reading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="929" y="39"/>
+		<location x="753" y="62"/>
 	</widget>
-	<widget field="Motor State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="997" y="90"/>
+	<widget field="Angle Encoder Reading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="498" y="64"/>
+	</widget>
+	<widget field="Elevator Motor State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="781" y="112"/>
+	</widget>
+	<widget field="Flap State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="562" y="37"/>
+	</widget>
+	<widget field="Elevator Desired Height" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="766" y="87"/>
 	</widget>
 	<widget field="Elevator State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="986" y="65"/>
-		<height>20</height>
+		<location x="810" y="36"/>
 	</widget>
 </dashboard>
 <live-window>

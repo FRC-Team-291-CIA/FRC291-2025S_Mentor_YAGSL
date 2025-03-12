@@ -3,6 +3,7 @@ package frc.robot.subsystems.flap;
 // Import necessary libraries and dependencies
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.spark.SparkMax;
@@ -51,6 +52,7 @@ public class FlapSubsystem extends SubsystemBase {
         public String getName() {
             return name;
         }
+
     }
 
     // Declare and initialize current flap state
@@ -91,6 +93,11 @@ public class FlapSubsystem extends SubsystemBase {
 
         // Get initial flap angle from encoder
         m_flapAngle = m_encoder.getPosition();
+        if (FlapConstants.TEST_STATE_BASED) {
+            this.setDefaultCommand(new RunCommand(() -> this.setWantedState(m_currentFlapState), this));
+        } else {
+            this.setDefaultCommand(new RunCommand(() -> this.setWantedState(FlapState.DISABLED), this));
+        }
     }
 
     // Override the periodic method in the SubsystemBase to update motor logic
@@ -98,18 +105,6 @@ public class FlapSubsystem extends SubsystemBase {
     public void periodic() {
         // Update flap angle from encoder
         m_flapAngle = m_encoder.getPosition();
-
-        // Control logic: If robot is enabled and flap state is not disabled, set
-        // reference position
-        if (DriverStation.isEnabled() && !((m_currentFlapState == FlapState.DISABLED))) {
-            m_controller.setReference(m_currentFlapState.getAngle(), ControlType.kMAXMotionPositionControl,
-                    ClosedLoopSlot.kSlot0,
-                    FlapConstants.SLOT_ZERO_FF,
-                    FlapConstants.SLOT_ZERO_FF_UNITS);
-        } else {
-            // Stop motor if robot is disabled or flap state is disabled
-            m_motor.stopMotor();
-        }
 
         // Send data to SmartDashboard for monitoring
         this.sendSmartDashboardValues();
@@ -124,5 +119,29 @@ public class FlapSubsystem extends SubsystemBase {
     // Method to update the desired flap state
     public void setWantedState(FlapState wantedState) {
         m_currentFlapState = wantedState;
+
+        // Control logic: If robot is enabled and flap state is not disabled, set
+        // reference position
+        if (DriverStation.isEnabled() && !((m_currentFlapState == FlapState.DISABLED))) {
+
+            if (FlapConstants.TEST_STATE_BASED) {
+                m_controller.setReference(m_currentFlapState.getAngle(), ControlType.kMAXMotionPositionControl,
+                        ClosedLoopSlot.kSlot0,
+                        FlapConstants.SLOT_ZERO_FF,
+                        FlapConstants.SLOT_ZERO_FF_UNITS);
+            } else {
+                if (m_currentFlapState == FlapState.DOWN) {
+                    m_motor.set(FlapConstants.DOWN_SPEED);
+                } else if (m_currentFlapState == FlapState.UP) {
+                    m_motor.set(FlapConstants.UP_SPEED);
+                } else {
+                    m_motor.stopMotor();
+                }
+            }
+        } else {
+            // Stop motor if robot is disabled or flap state is disabled
+            m_motor.stopMotor();
+        }
+
     }
 }

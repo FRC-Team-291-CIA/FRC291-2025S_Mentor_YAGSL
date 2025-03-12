@@ -3,6 +3,7 @@ package frc.robot.subsystems.elevator;
 // Import necessary libraries and dependencies
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.spark.SparkMax;
@@ -124,7 +125,15 @@ public class ElevatorSubsystem extends SubsystemBase {
                 .p(ElevatorConstants.SLOT_ZERO_P, ClosedLoopSlot.kSlot0)
                 .i(ElevatorConstants.SLOT_ZERO_I, ClosedLoopSlot.kSlot0)
                 .d(ElevatorConstants.SLOT_ZERO_D, ClosedLoopSlot.kSlot0)
-                .outputRange(-1, 1, ClosedLoopSlot.kSlot0);
+                .p(ElevatorConstants.SLOT_ONE_P, ClosedLoopSlot.kSlot1)
+                .i(ElevatorConstants.SLOT_ONE_I, ClosedLoopSlot.kSlot1)
+                .d(ElevatorConstants.SLOT_ONE_D, ClosedLoopSlot.kSlot1)
+                .outputRange(-1, 1, ClosedLoopSlot.kSlot0)
+                .outputRange(-1, 1, ClosedLoopSlot.kSlot1).maxMotion
+                .maxAcceleration(ElevatorConstants.SLOT_ZERO_MAX_ACCELERATION, ClosedLoopSlot.kSlot0)
+                .maxVelocity(ElevatorConstants.SLOT_ZERO_MAX_VELOCITY, ClosedLoopSlot.kSlot0)
+                .maxAcceleration(ElevatorConstants.SLOT_ONE_MAX_ACCELERATION, ClosedLoopSlot.kSlot1)
+                .maxVelocity(ElevatorConstants.SLOT_ONE_MAX_VELOCITY, ClosedLoopSlot.kSlot1);
 
         // Apply left motor configuration
         m_motorLeft.configure(m_configLeft, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -142,6 +151,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         // Set initial elevator height from encoder
         m_elevatorHeight = m_encoderLeft.getPosition();
+
+        this.setDefaultCommand(new RunCommand(() -> this.setWantedState(m_currentElevatorState), this));
     }
 
     // Override the periodic method to update elevator logic
@@ -150,7 +161,24 @@ public class ElevatorSubsystem extends SubsystemBase {
         // Update elevator height from encoder
         m_elevatorHeight = m_encoderLeft.getPosition();
 
-        // Control logic for elevator movement
+        // Send telemetry data to SmartDashboard
+        this.sendSmartDashboardValues();
+    }
+
+    // Method to send elevator state and encoder values to SmartDashboard
+    private void sendSmartDashboardValues() {
+        SmartDashboard.putString("Elevator State", m_currentElevatorState.getName());
+        SmartDashboard.putString("Elevator Motor State", m_currentMotorState.getName());
+        SmartDashboard.putNumber("Elevator Desired Height", m_currentElevatorState.getHeight());
+        SmartDashboard.putNumber("Elevator Encoder Reading", m_elevatorHeight);
+        SmartDashboard.putNumber("Elevator Motor Left Amps", m_motorLeft.getOutputCurrent());
+        SmartDashboard.putNumber("Elevator Motor Right Amps", m_motorRight.getOutputCurrent());
+    }
+
+    // Method to update the desired elevator state
+    public void setWantedState(ElevatorState wantedState) {
+        m_currentElevatorState = wantedState;
+
         if (DriverStation.isEnabled() && !(m_currentElevatorState == ElevatorState.NO_POWER
                 || m_currentElevatorState == ElevatorState.DISABLED)) {
             if (ElevatorConstants.TEST_ANTI_MOTOR_CRASH_IS_ENABLED) {
@@ -164,21 +192,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         } else {
             m_motorLeft.stopMotor(); // Stop motor if disabled
         }
-
-        // Send telemetry data to SmartDashboard
-        this.sendSmartDashboardValues();
-    }
-
-    // Method to send elevator state and encoder values to SmartDashboard
-    private void sendSmartDashboardValues() {
-        SmartDashboard.putString("Elevator State", m_currentElevatorState.getName());
-        SmartDashboard.putString("Motor State", m_currentMotorState.getName());
-        SmartDashboard.putNumber("Elevator Encoder Reading", m_elevatorHeight);
-    }
-
-    // Method to update the desired elevator state
-    public void setWantedState(ElevatorState wantedState) {
-        m_currentElevatorState = wantedState;
     }
 
     // Method to Determine Motor State for Anti Crash System

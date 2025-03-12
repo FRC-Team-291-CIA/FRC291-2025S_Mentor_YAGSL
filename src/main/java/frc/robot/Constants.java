@@ -128,7 +128,7 @@ public final class Constants {
 
   public static class ElevatorConstants {
     // Enables or disables anti-motor crash testing feature
-    public static final boolean TEST_ANTI_MOTOR_CRASH_IS_ENABLED = false;
+    public static final boolean TEST_ANTI_MOTOR_CRASH_IS_ENABLED = true;
 
     // Percentage values for motor crash prevention thresholds
     public static final double ANTI_CRASH_PERCENT_FROM_TOP = 0.9;
@@ -155,17 +155,17 @@ public final class Constants {
     public static final double SLOT_ZERO_D = 0.00;
     public static final double SLOT_ZERO_FF = 0.00;
     public static final ArbFFUnits SLOT_ZERO_FF_UNITS = ArbFFUnits.kPercentOut;
-    public static final double SLOT_ZERO_MAX_ACCELERATION = 0.00;
-    public static final double SLOT_ZERO_MAX_VELOCITY = 0.00;
+    public static final double SLOT_ZERO_MAX_ACCELERATION = 2000.00;
+    public static final double SLOT_ZERO_MAX_VELOCITY = 4000.00;
 
     // PID slot 1 constants for motor control
-    public static final double SLOT_ONE_P = 0.25;
+    public static final double SLOT_ONE_P = 0.3;
     public static final double SLOT_ONE_I = 0.00;
     public static final double SLOT_ONE_D = 0.00;
     public static final double SLOT_ONE_FF = 0.00;
     public static final ArbFFUnits SLOT_ONE_FF_UNITS = ArbFFUnits.kPercentOut;
-    public static final double SLOT_ONE_MAX_ACCELERATION = 0.00;
-    public static final double SLOT_ONE_MAX_VELOCITY = 0.00;
+    public static final double SLOT_ONE_MAX_ACCELERATION = 1000.00;
+    public static final double SLOT_ONE_MAX_VELOCITY = 1000.00;
 
     // Predefined elevator height positions for different levels
     public static final double HEIGHT_CORAL_LEVEL_FOUR = -52.20; // Estimated based on manual lift.
@@ -200,6 +200,8 @@ public final class Constants {
   }
 
   public static class FlapConstants {
+    public static final boolean TEST_STATE_BASED = false;
+
     // Motor configuration for flap mechanism
     public static final int MOTOR_CANID = 24;
     public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
@@ -217,13 +219,22 @@ public final class Constants {
     public static final double SLOT_ZERO_D = 0.00;
     public static final double SLOT_ZERO_FF = 0.00;
     public static final ArbFFUnits SLOT_ZERO_FF_UNITS = ArbFFUnits.kPercentOut;
-    public static final double SLOT_ZERO_MAX_ACCELERATION = 0.00;
-    public static final double SLOT_ZERO_MAX_VELOCITY = 0.00;
+    public static final double SLOT_ZERO_MAX_ACCELERATION = 1000.00;
+    public static final double SLOT_ZERO_MAX_VELOCITY = 1000.00;
 
     // Predefined angle positions for the flap
     public static final double ANGLE_UP = 90;
     public static final double ANGLE_DOWN = 0;
     public static final double ANGLE_DISBALED = Double.NaN;
+
+    public static final double UP_SPEED = 0.5;
+    public static final double DOWN_SPEED = -0.5;
+  }
+
+  public static class ClimberConstants {
+    public static final int MOTOR_CANID = 25;
+    public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
+    public static final boolean MOTOR_IS_INVERTED = false;
   }
 
   public static class CIAAutoConstants {
