@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.io.File;
+import java.lang.ModuleLayer.Controller;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -36,6 +37,7 @@ import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorState;
 import frc.robot.subsystems.flap.FlapSubsystem;
 import frc.robot.subsystems.flap.FlapSubsystem.FlapState;
 import frc.robot.subsystems.coral.CoralSubsystem;
+import frc.robot.subsystems.climber.ClimberSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -57,6 +59,7 @@ public class RobotContainer {
         private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
         private final FlapSubsystem m_flapSubsystem = new FlapSubsystem();
         private final CoralSubsystem m_coralSubsystem = new CoralSubsystem();
+        private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
 
         /**
          * Converts driver input into a field-relative ChassisSpeeds that is controlled
@@ -66,7 +69,8 @@ public class RobotContainer {
                         () -> controllerDriver.getRawAxis(ControllerDriverConstants.AXIS_LEFT_Y) * -1,
                         () -> controllerDriver.getRawAxis(ControllerDriverConstants.AXIS_LEFT_X) * -1)
                         .withControllerRotationAxis(() -> controllerDriver.getRawAxis(
-                                        ControllerDriverConstants.AXIS_RIGHT_X))
+                                        ControllerDriverConstants.AXIS_RIGHT_X)
+                                        * -1)
                         .deadband(
                                         ControllerDriverConstants.DEADBAND)
                         .scaleTranslation(0.8)
@@ -132,6 +136,7 @@ public class RobotContainer {
                 m_chooser.addOption("Left Two Auto", drivebase.getAutonomousCommand("Left Two Auto"));
 
                 SmartDashboard.putData(m_chooser);
+                SmartDashboard.putData("CoralSubsystem", m_coralSubsystem);
 
                 // Configure the trigger bindings
                 configureBindings();
@@ -233,6 +238,15 @@ public class RobotContainer {
                                         ControllerDriverConstants.BUTTON_BUMPER_LEFT)
                                         .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
+                        controllerDriver.button(ControllerDriverConstants.BUTTON_JOYSTICK_RIGHT).onTrue(Commands
+                                        .runOnce(() -> m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_INTAKE)));
+
+                        controllerDriver.button(ControllerDriverConstants.BUTTON_BUMPER_LEFT)
+                                        .whileTrue(Commands.run(m_climberSubsystem::out, m_climberSubsystem));
+
+                        controllerDriver.button(ControllerDriverConstants.BUTTON_BUMPER_RIGHT)
+                                        .whileTrue(Commands.run(m_climberSubsystem::in, m_climberSubsystem));
+
                         // ---------------------------- Operator Controller ---------------------------
                         // Elevator
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_A).onTrue(Commands
@@ -287,11 +301,11 @@ public class RobotContainer {
                                         new IntakeCoralCommand(m_coralSubsystem));
 
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_TOP_RIGHT)
-                                        .whileTrue(Commands.run(() -> m_coralSubsystem.MANUAL_FORWARD_FAST()));
+                                        .whileTrue(m_coralSubsystem.MANUAL_FORWARD_FAST());
 
-                        controllerOperator.pov(0).whileTrue(Commands.run(() -> m_coralSubsystem.MANUAL_REVERSE_SLOW()));
+                        controllerOperator.pov(0).whileTrue(m_coralSubsystem.MANUAL_FORWARD_SLOW());
                         controllerOperator.pov(180)
-                                        .whileTrue(Commands.run(() -> m_coralSubsystem.MANUAL_REVERSE_SLOW()));
+                                        .whileTrue(m_coralSubsystem.MANUAL_REVERSE_SLOW());
                 }
 
         }

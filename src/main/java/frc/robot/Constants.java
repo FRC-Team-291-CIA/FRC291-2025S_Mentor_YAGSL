@@ -80,6 +80,9 @@ public final class Constants {
     public static final int BUTTON_Y = 4;
     public static final int BUTTON_X = 3;
 
+    public static final int BUTTON_JOYSTICK_LEFT = 9;
+    public static final int BUTTON_JOYSTICK_RIGHT = 10;
+
     public static final int BUTTON_BACK = 7;
     public static final int BUTTON_START = 8;
 
@@ -128,7 +131,7 @@ public final class Constants {
 
   public static class ElevatorConstants {
     // Enables or disables anti-motor crash testing feature
-    public static final boolean TEST_ANTI_MOTOR_CRASH_IS_ENABLED = true;
+    public static final boolean TEST_ANTI_MOTOR_CRASH_IS_ENABLED = false;
 
     // Percentage values for motor crash prevention thresholds
     public static final double ANTI_CRASH_PERCENT_FROM_TOP = 0.9;
@@ -150,11 +153,11 @@ public final class Constants {
     public static final int MOTOR_SMART_CURRENT_LIMIT = 40;
 
     // PID slot 0 constants for motor control
-    public static final double SLOT_ZERO_P = 0.50;
+    public static final double SLOT_ZERO_P = 0.20;
     public static final double SLOT_ZERO_I = 0.00;
     public static final double SLOT_ZERO_D = 0.00;
-    public static final double SLOT_ZERO_FF = 0.00;
-    public static final ArbFFUnits SLOT_ZERO_FF_UNITS = ArbFFUnits.kPercentOut;
+    public static final double SLOT_ZERO_FF = -0.00; // -0.60
+    public static final ArbFFUnits SLOT_ZERO_FF_UNITS = ArbFFUnits.kVoltage;
     public static final double SLOT_ZERO_MAX_ACCELERATION = 2000.00;
     public static final double SLOT_ZERO_MAX_VELOCITY = 4000.00;
 
@@ -193,10 +196,10 @@ public final class Constants {
     public static final boolean INTAKE_SENSOR_IS_INVERTED = false;
 
     // Manual control speeds for intake system
-    public static final double SPEED_MANUAL_FORWARD_SLOW = 0.4;
-    public static final double SPEED_MANUAL_FORWARD_FAST = 0.2;
-    public static final double SPEED_MANUAL_REVERSE_SLOW = -0.4;
-    public static final double SPEED_MANUAL_REVERSE_FAST = -0.2;
+    public static final double SPEED_MANUAL_FORWARD_SLOW = 0.2;
+    public static final double SPEED_MANUAL_FORWARD_FAST = 0.4;
+    public static final double SPEED_MANUAL_REVERSE_SLOW = -0.2;
+    public static final double SPEED_MANUAL_REVERSE_FAST = -0.4;
   }
 
   public static class FlapConstants {
@@ -235,6 +238,10 @@ public final class Constants {
     public static final int MOTOR_CANID = 25;
     public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
     public static final boolean MOTOR_IS_INVERTED = false;
+    public static final int MOTOR_SMART_CURRENT_LIMIT = 40;
+
+    public static final double SPEED_IN = 0.5;
+    public static final double SPEED_OUT = -0.5;
   }
 
   public static class CIAAutoConstants {

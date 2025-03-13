@@ -51,7 +51,7 @@ public class CoralSubsystem extends SubsystemBase {
         // Initialize intake sensor
         m_intakeSensor = new DigitalInput(CoralConstants.INTAKE_SENSOR_DIOPORT);
 
-        this.setDefaultCommand(new RunCommand(() -> this.STOPPED(), this));
+        this.setDefaultCommand(run(() -> m_motorLeft.stopMotor()).withName("DEFAULT: STOPPED"));
     }
 
     // Override periodic method to update intake sensor value
@@ -90,26 +90,30 @@ public class CoralSubsystem extends SubsystemBase {
     }
 
     public Command STOPPED() {
-        return new RunCommand(() -> m_motorLeft.stopMotor(), this);
+        return run(() -> m_motorLeft.stopMotor()).withName("STOPPED");
     }
 
     // Command to move coral forward at a slow speed
     public Command MANUAL_FORWARD_SLOW() {
-        return new RunCommand(() -> m_motorLeft.set(CoralConstants.SPEED_MANUAL_FORWARD_SLOW), this);
+        return run(() -> m_motorLeft.set(CoralConstants.SPEED_MANUAL_FORWARD_SLOW))
+                .withName("MANUAL_FORWARD_SLOW");
     }
 
     // Command to move coral forward at a fast speed
     public Command MANUAL_FORWARD_FAST() {
-        return new RunCommand(() -> m_motorLeft.set(CoralConstants.SPEED_MANUAL_FORWARD_FAST), this);
+        return run(() -> m_motorLeft.set(CoralConstants.SPEED_MANUAL_FORWARD_FAST))
+                .withName("MANUAL_FORWARD_FAST");
     }
 
     // Command to move coral in reverse at a slow speed
     public Command MANUAL_REVERSE_SLOW() {
-        return new RunCommand(() -> m_motorLeft.set(CoralConstants.SPEED_MANUAL_REVERSE_SLOW), this);
+        return run(() -> m_motorLeft.set(CoralConstants.SPEED_MANUAL_REVERSE_SLOW))
+                .withName("MANUAL_REVERSE_SLOW");
     }
 
     // Command to move coral in reverse at a fast speed
     public Command MANUAL_REVERSE_FAST() {
-        return new RunCommand(() -> m_motorLeft.set(CoralConstants.SPEED_MANUAL_REVERSE_FAST), this);
+        return run(() -> m_motorLeft.set(CoralConstants.SPEED_MANUAL_REVERSE_FAST))
+                .withName("MANUAL_REVERSE_FAST");
     }
 }

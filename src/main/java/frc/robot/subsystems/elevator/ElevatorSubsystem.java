@@ -185,7 +185,7 @@ public class ElevatorSubsystem extends SubsystemBase {
                 this.determineMotorState();
             }
             m_controllerLeft.setReference(
-                    m_currentElevatorState.getHeight(), ControlType.kMAXMotionPositionControl,
+                    m_currentElevatorState.getHeight(), ControlType.kPosition,
                     m_currentMotorState.getClosedLoopSlot(),
                     m_currentMotorState.getFF(),
                     m_currentMotorState.getArbFFUnits());
@@ -198,12 +198,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     private void determineMotorState() {
         // Check if the elevator is at CORAL_LEVEL_FOUR or CORAL_INTAKE state
         if ((m_currentElevatorState == ElevatorState.CORAL_LEVEL_FOUR
-                || m_currentElevatorState == ElevatorState.CORAL_INTAKE)
-                // Check if elevator height falls within the anti-crash safety threshold
-                && (m_elevatorHeight >= ElevatorState.CORAL_LEVEL_FOUR.getHeight()
-                        * ElevatorConstants.ANTI_CRASH_PERCENT_FROM_TOP
-                        || m_elevatorHeight <= ElevatorState.CORAL_INTAKE.getHeight()
-                                * ElevatorConstants.ANTI_CRASH_PERCENT_ABOVE_BOT)) {
+                && m_elevatorHeight >= ElevatorState.CORAL_LEVEL_FOUR
+                        .getHeight() * ElevatorConstants.ANTI_CRASH_PERCENT_FROM_TOP)
+                || (m_currentElevatorState == ElevatorState.CORAL_INTAKE
+                        && m_elevatorHeight <= ElevatorState.CORAL_INTAKE
+                                .getHeight() * ElevatorConstants.ANTI_CRASH_PERCENT_ABOVE_BOT)) {
             // Set motor state to ANTI_CRASH to prevent potential collisions
             m_currentMotorState = MotorState.ANTI_CRASH;
         } else {
