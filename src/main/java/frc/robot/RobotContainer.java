@@ -5,7 +5,6 @@
 package frc.robot;
 
 import java.io.File;
-import java.lang.ModuleLayer.Controller;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -25,12 +24,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import swervelib.SwerveInputStream;
+
 import com.pathplanner.lib.auto.NamedCommands;
 
 import frc.robot.Constants.ControllerDriverConstants;
 import frc.robot.Constants.ControllerOperatorConstants;
 import frc.robot.Constants.FlapConstants;
-import frc.robot.commands.IntakeCoralCommand;
+
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorState;
@@ -38,6 +38,8 @@ import frc.robot.subsystems.flap.FlapSubsystem;
 import frc.robot.subsystems.flap.FlapSubsystem.FlapState;
 import frc.robot.subsystems.coral.CoralSubsystem;
 import frc.robot.subsystems.climber.ClimberSubsystem;
+
+import frc.robot.commands.IntakeCoralCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
