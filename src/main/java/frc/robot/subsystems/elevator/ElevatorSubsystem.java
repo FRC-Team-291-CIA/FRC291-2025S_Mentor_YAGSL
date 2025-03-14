@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.ClosedLoopSlot;
@@ -112,7 +113,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         m_configLeft = new SparkMaxConfig();
         m_configLeft
                 .inverted(ElevatorConstants.MOTOR_LEFT_IS_INVERTED)
-                .smartCurrentLimit(ElevatorConstants.MOTOR_SMART_CURRENT_LIMIT);
+                .smartCurrentLimit(ElevatorConstants.MOTOR_SMART_CURRENT_LIMIT)
+                .idleMode(IdleMode.kBrake);
 
         // Set encoder conversion factors
         m_configLeft.encoder
@@ -140,7 +142,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         // Configure right motor to follow the left motor
         m_configRight = new SparkMaxConfig();
-        m_configRight.follow(m_motorLeft, ElevatorConstants.MOTOR_RIGHT_IS_INVERTED);
+        m_configRight.follow(m_motorLeft, ElevatorConstants.MOTOR_RIGHT_IS_INVERTED)
+                .idleMode(IdleMode.kBrake);
         m_motorRight.configure(m_configRight, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         // Initialize encoders and closed-loop controllers

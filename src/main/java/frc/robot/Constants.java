@@ -154,7 +154,7 @@ public final class Constants {
     public static final int MOTOR_SMART_CURRENT_LIMIT = 40;
 
     // PID slot 0 constants for motor control
-    public static final double SLOT_ZERO_P = 0.20;
+    public static final double SLOT_ZERO_P = 0.10;
     public static final double SLOT_ZERO_I = 0.00;
     public static final double SLOT_ZERO_D = 0.00;
     public static final double SLOT_ZERO_FF = -0.00; // -0.60
