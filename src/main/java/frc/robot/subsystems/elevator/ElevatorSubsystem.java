@@ -64,9 +64,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // Enum for different motor control states
     private enum MotorState {
-        NORMAL(ClosedLoopSlot.kSlot0, ElevatorConstants.SLOT_ZERO_FF_UNITS, ElevatorConstants.SLOT_ZERO_FF, "NORMAL"),
-        ANTI_CRASH(ClosedLoopSlot.kSlot1, ElevatorConstants.SLOT_ONE_FF_UNITS, ElevatorConstants.SLOT_ONE_FF,
-                "ANTI CRASH");
+        UP(ClosedLoopSlot.kSlot0, ElevatorConstants.SLOT_ZERO_FF_UNITS, ElevatorConstants.SLOT_ZERO_FF, "UP"),
+        DOWN(ClosedLoopSlot.kSlot1, ElevatorConstants.SLOT_ONE_FF_UNITS, ElevatorConstants.SLOT_ONE_FF,
+                "DOWN");
 
         private final ClosedLoopSlot closedLoopSlot;
         private final ArbFFUnits arbFFUnits;
@@ -101,7 +101,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // Declare and initialize current elevator and motor states
     public ElevatorState m_currentElevatorState = ElevatorState.DISABLED;
-    private MotorState m_currentMotorState = MotorState.NORMAL;
+    public ElevatorState m_previousElevatorState = ElevatorState.DISABLED;
+    private MotorState m_currentMotorState = MotorState.UP;
 
     // Constructor for ElevatorSubsystem
     public ElevatorSubsystem() {
@@ -182,17 +183,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void setWantedState(ElevatorState wantedState) {
         m_currentElevatorState = wantedState;
 
-        if (DriverStation.isEnabled() && !(m_currentElevatorState == ElevatorState.NO_POWER
-                || m_currentElevatorState == ElevatorState.DISABLED)) {
-            if (ElevatorConstants.TEST_ANTI_MOTOR_CRASH_IS_ENABLED) {
-                this.determineMotorState();
-            }
-            m_controllerLeft.setReference(
-                    m_currentElevatorState.getHeight(), ControlType.kPosition,
-                    m_currentMotorState.getClosedLoopSlot(),
-                    m_currentMotorState.getFF(),
-                    m_currentMotorState.getArbFFUnits());
-        } else {
+        if (m_currentElevatorState != m_previousElevatorState) {
+            this.determineMotorState();
+            m_previousElevatorState = m_currentElevatorState;
+        }
+        this.determineMotorState();
+        m_controllerLeft.setReference(
+                m_currentElevatorState.getHeight(), ControlType.kPosition,
+                m_currentMotorState.getClosedLoopSlot(),
+                m_currentMotorState.getFF(),
+                m_currentMotorState.getArbFFUnits());
+        if (m_currentElevatorState == ElevatorState.DISABLED || m_currentElevatorState == ElevatorState.NO_POWER) {
             m_motorLeft.stopMotor(); // Stop motor if disabled
         }
     }
@@ -200,19 +201,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     // Method to Determine Motor State for Anti Crash System
     private void determineMotorState() {
         // Check if the elevator is at CORAL_LEVEL_FOUR or CORAL_INTAKE state
-        if ((m_currentElevatorState == ElevatorState.CORAL_LEVEL_FOUR
-                && m_elevatorHeight >= ElevatorState.CORAL_LEVEL_FOUR
-                        .getHeight() * ElevatorConstants.ANTI_CRASH_PERCENT_FROM_TOP)
-                || (m_currentElevatorState == ElevatorState.CORAL_INTAKE
-                        && m_elevatorHeight <= ElevatorState.CORAL_INTAKE
-                                .getHeight() * ElevatorConstants.ANTI_CRASH_PERCENT_ABOVE_BOT)) {
-            // Set motor state to ANTI_CRASH to prevent potential collisions
-            m_currentMotorState = MotorState.ANTI_CRASH;
-        } else {
-            // Otherwise, set motor state to NORMAL
-            m_currentMotorState = MotorState.NORMAL;
+        if (m_elevatorHeight <= m_currentElevatorState.getHeight()) {
+            m_currentMotorState = MotorState.DOWN;
+        } else if (m_elevatorHeight >= m_currentElevatorState.getHeight()) {
+            m_currentMotorState = MotorState.UP;
         }
-
     }
 
 }

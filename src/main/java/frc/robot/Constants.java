@@ -36,7 +36,7 @@ public final class Constants {
   public static final double LOOP_TIME = 0.13; // seconds
 
   // Maximum robot speed in meters per second
-  public static final double MAX_SPEED = Units.feetToMeters(14.50);
+  public static final double MAX_SPEED = Units.feetToMeters(10);
 
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
@@ -132,7 +132,7 @@ public final class Constants {
 
   public static class ElevatorConstants {
     // Enables or disables anti-motor crash testing feature
-    public static final boolean TEST_ANTI_MOTOR_CRASH_IS_ENABLED = false;
+    public static final boolean TEST_ANTI_MOTOR_CRASH_IS_ENABLED = true;
 
     // Percentage values for motor crash prevention thresholds
     public static final double ANTI_CRASH_PERCENT_FROM_TOP = 0.9;
@@ -163,7 +163,7 @@ public final class Constants {
     public static final double SLOT_ZERO_MAX_VELOCITY = 4000.00;
 
     // PID slot 1 constants for motor control
-    public static final double SLOT_ONE_P = 0.3;
+    public static final double SLOT_ONE_P = 0.025;
     public static final double SLOT_ONE_I = 0.00;
     public static final double SLOT_ONE_D = 0.00;
     public static final double SLOT_ONE_FF = 0.00;
@@ -172,7 +172,7 @@ public final class Constants {
     public static final double SLOT_ONE_MAX_VELOCITY = 1000.00;
 
     // Predefined elevator height positions for different levels
-    public static final double HEIGHT_CORAL_LEVEL_FOUR = -52.20; // Estimated based on manual lift.
+    public static final double HEIGHT_CORAL_LEVEL_FOUR = -53.20; // Estimated based on manual lift.
     public static final double HEIGHT_CORAL_LEVEL_THREE = -28.00; // Slightly lower than 25 for best fit.
     public static final double HEIGHT_CORAL_LEVEL_TWO = -12.00; // Slightly lower than 10 for best fit.
     public static final double HEIGHT_CORAL_LEVEL_ONE = -5.00; // Unknown value.
