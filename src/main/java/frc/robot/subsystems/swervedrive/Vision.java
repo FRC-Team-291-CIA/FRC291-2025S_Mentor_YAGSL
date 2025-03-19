@@ -185,6 +185,7 @@ public class Vision {
    * @return Could be empty if there isn't a good reading.
    */
   @Deprecated(since = "2024", forRemoval = true)
+  @SuppressWarnings("unused")
   private Optional<EstimatedRobotPose> filterPose(Optional<EstimatedRobotPose> pose) {
     if (pose.isPresent()) {
       double bestTargetAmbiguity = 1; // 1 is max ambiguity
@@ -380,6 +381,7 @@ public class Vision {
     /**
      * Last read from the camera timestamp to prevent lag due to slow data fetches.
      */
+    @SuppressWarnings("unused")
     private double lastReadTimestamp = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
 
     /**
@@ -499,6 +501,7 @@ public class Vision {
     private void updateUnreadResults() {
       double mostRecentTimestamp = resultsList.isEmpty() ? 0.0 : resultsList.get(0).getTimestampSeconds();
       double currentTimestamp = Microseconds.of(NetworkTablesJNI.now()).in(Seconds);
+      @SuppressWarnings("unused")
       double debounceTime = Milliseconds.of(15).in(Seconds);
       for (PhotonPipelineResult result : resultsList) {
         mostRecentTimestamp = Math.max(mostRecentTimestamp, result.getTimestampSeconds());

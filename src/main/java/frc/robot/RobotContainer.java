@@ -161,14 +161,19 @@ public class RobotContainer {
          * Flight joysticks}.
          */
         private void configureBindings() {
+                @SuppressWarnings("unused")
                 Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
                 Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+                @SuppressWarnings("unused")
                 Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
+                @SuppressWarnings("unused")
                 Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(
                                 driveDirectAngle);
                 Command driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard);
+                @SuppressWarnings("unused")
                 Command driveFieldOrientedAnglularVelocityKeyboard = drivebase
                                 .driveFieldOriented(driveAngularVelocityKeyboard);
+                @SuppressWarnings("unused")
                 Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(
                                 driveDirectAngleKeyboard);
 

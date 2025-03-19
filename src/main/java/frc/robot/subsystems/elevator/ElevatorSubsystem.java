@@ -1,7 +1,6 @@
 package frc.robot.subsystems.elevator;
 
 // Import necessary libraries and dependencies
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,7 +12,6 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.ClosedLoopSlot;
@@ -26,8 +24,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     // Declare motor controllers, configurations, encoders, and controllers
     private final SparkMax m_motorLeft, m_motorRight;
     private final SparkMaxConfig m_configLeft, m_configRight;
-    private final RelativeEncoder m_encoderLeft, m_encoderRight;
-    private final SparkClosedLoopController m_controllerLeft, m_controllerRight;
+    private final RelativeEncoder m_encoderLeft;
+    private final SparkClosedLoopController m_controllerLeft;
 
     private double m_elevatorHeight = -291.00; // Default height for debugging purposes
 
@@ -148,9 +146,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         // Initialize encoders and closed-loop controllers
         m_encoderLeft = m_motorLeft.getEncoder();
-        m_encoderRight = m_motorRight.getEncoder();
         m_controllerLeft = m_motorLeft.getClosedLoopController();
-        m_controllerRight = m_motorRight.getClosedLoopController();
 
         // Set initial elevator height from encoder
         m_elevatorHeight = m_encoderLeft.getPosition();
