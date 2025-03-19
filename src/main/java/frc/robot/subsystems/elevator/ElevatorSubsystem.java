@@ -115,7 +115,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         m_configLeft
                 .inverted(ElevatorConstants.MOTOR_LEFT_IS_INVERTED)
                 .smartCurrentLimit(ElevatorConstants.MOTOR_SMART_CURRENT_LIMIT)
-                .idleMode(IdleMode.kBrake);
+                .idleMode(ElevatorConstants.MOTOR_LEFT_MODE);
 
         // Set encoder conversion factors
         m_configLeft.encoder
@@ -132,19 +132,18 @@ public class ElevatorSubsystem extends SubsystemBase {
                 .i(ElevatorConstants.SLOT_ONE_I, ClosedLoopSlot.kSlot1)
                 .d(ElevatorConstants.SLOT_ONE_D, ClosedLoopSlot.kSlot1)
                 .outputRange(-1, 1, ClosedLoopSlot.kSlot0)
-                .outputRange(-1, 1, ClosedLoopSlot.kSlot1).maxMotion
-                .maxAcceleration(ElevatorConstants.SLOT_ZERO_MAX_ACCELERATION, ClosedLoopSlot.kSlot0)
-                .maxVelocity(ElevatorConstants.SLOT_ZERO_MAX_VELOCITY, ClosedLoopSlot.kSlot0)
-                .maxAcceleration(ElevatorConstants.SLOT_ONE_MAX_ACCELERATION, ClosedLoopSlot.kSlot1)
-                .maxVelocity(ElevatorConstants.SLOT_ONE_MAX_VELOCITY, ClosedLoopSlot.kSlot1);
+                .outputRange(-1, 1, ClosedLoopSlot.kSlot1);
 
         // Apply left motor configuration
         m_motorLeft.configure(m_configLeft, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         // Configure right motor to follow the left motor
         m_configRight = new SparkMaxConfig();
-        m_configRight.follow(m_motorLeft, ElevatorConstants.MOTOR_RIGHT_IS_INVERTED)
-                .idleMode(IdleMode.kBrake);
+
+        m_configRight
+                .follow(m_motorLeft, ElevatorConstants.MOTOR_RIGHT_IS_INVERTED)
+                .idleMode(ElevatorConstants.MOTOR_RIGHT_MODE);
+
         m_motorRight.configure(m_configRight, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         // Initialize encoders and closed-loop controllers

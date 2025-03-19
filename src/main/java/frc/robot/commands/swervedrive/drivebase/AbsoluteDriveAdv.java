@@ -123,7 +123,8 @@ public class AbsoluteDriveAdv extends Command {
     // Limit velocity to prevent tippy
     Translation2d translation = SwerveController.getTranslation2d(desiredSpeeds);
     translation = SwerveMath.limitVelocity(translation, swerve.getFieldVelocity(), swerve.getPose(),
-        Constants.LOOP_TIME, Constants.ROBOT_MASS, List.of(Constants.CHASSIS),
+        Constants.YAGSLConstants.LOOP_TIME, Constants.YAGSLConstants.ROBOT_MASS,
+        List.of(Constants.YAGSLConstants.CHASSIS),
         swerve.getSwerveDriveConfiguration());
     SmartDashboard.putNumber("LimitedTranslation", translation.getX());
     SmartDashboard.putString("Translation", translation.toString());
@@ -131,7 +132,7 @@ public class AbsoluteDriveAdv extends Command {
     // Make the robot move
     if (headingX == 0 && headingY == 0 && Math.abs(headingAdjust.getAsDouble()) > 0) {
       resetHeading = true;
-      swerve.drive(translation, (Constants.OperatorConstants.TURN_CONSTANT * -headingAdjust.getAsDouble()), true);
+      swerve.drive(translation, (Constants.YAGSLConstants.TURN_CONSTANT * -headingAdjust.getAsDouble()), true);
     } else {
       swerve.drive(translation, desiredSpeeds.omegaRadiansPerSecond, true);
     }

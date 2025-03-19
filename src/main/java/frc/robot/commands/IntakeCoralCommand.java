@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.subsystems.coral.CoralSubsystem;
+
 import frc.robot.Constants.CIAAutoConstants;
 
 /**
@@ -14,8 +16,14 @@ import frc.robot.Constants.CIAAutoConstants;
 public class IntakeCoralCommand extends Command {
 
     private final CoralSubsystem m_coralSubsystem; // Reference to the coral intake subsystem
-    private boolean hasCoralEntered, hasCoralExited, commandDone; // Flags to track the coral's position and command
-                                                                  // completion
+    private boolean m_commandDone; // Flag to End
+
+    private enum STAGE {
+        STAGE_ONE,
+        STAGE_TWO,
+    }
+
+    private STAGE m_currentStage;
 
     /**
      * Constructor for the intake command.
@@ -36,9 +44,8 @@ public class IntakeCoralCommand extends Command {
      */
     @Override
     public void initialize() {
-        hasCoralEntered = false;
-        hasCoralExited = false;
-        commandDone = false;
+        m_currentStage = STAGE.STAGE_ONE;
+        m_commandDone = false;
     }
 
     /**
@@ -47,22 +54,21 @@ public class IntakeCoralCommand extends Command {
      */
     @Override
     public void execute() {
-        if (!hasCoralEntered) {
-            // Start running the intake at an initial speed
-            m_coralSubsystem.setSpeed(CIAAutoConstants.SPEED_AUTO_CORAL_BEFORE_ENTER);
-
-            // Check if the coral has entered (detected by sensor)
-            hasCoralEntered = m_coralSubsystem.m_intakeSensorValue;
-        } else if (hasCoralEntered && !hasCoralExited) {
-            // Adjust speed after the coral has entered
-            m_coralSubsystem.setSpeed(CIAAutoConstants.SPEED_AUTO_CORAL_AFTER_ENTER);
-
-            // Check if the coral has exited (sensor no longer detects it)
-            hasCoralExited = !m_coralSubsystem.m_intakeSensorValue;
-        } else if (hasCoralEntered && hasCoralExited) {
-            // Stop the intake once the coral has fully passed through
-            m_coralSubsystem.setSpeed(0.00);
-            commandDone = true; // Mark the command as completed
+        switch (m_currentStage) {
+            case STAGE_ONE:
+                if (m_coralSubsystem.m_intakeSensorValue) {
+                    m_currentStage = STAGE.STAGE_TWO;
+                } else {
+                    m_coralSubsystem.setSpeed(CIAAutoConstants.AUTO_SPEED_CORAL_BEFORE_ENTER);
+                }
+                break;
+            case STAGE_TWO:
+                if (!m_coralSubsystem.m_intakeSensorValue) {
+                    m_commandDone = true;
+                } else {
+                    m_coralSubsystem.setSpeed(CIAAutoConstants.AUTO_SPEED_CORAL_AFTER_ENTER);
+                }
+                break;
         }
     }
 
@@ -84,6 +90,6 @@ public class IntakeCoralCommand extends Command {
      */
     @Override
     public boolean isFinished() {
-        return commandDone;
+        return m_commandDone;
     }
 }

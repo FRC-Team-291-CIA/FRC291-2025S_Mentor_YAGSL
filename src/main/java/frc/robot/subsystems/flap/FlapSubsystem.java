@@ -80,9 +80,7 @@ public class FlapSubsystem extends SubsystemBase {
                 .p(FlapConstants.SLOT_ZERO_P, ClosedLoopSlot.kSlot0)
                 .i(FlapConstants.SLOT_ZERO_I, ClosedLoopSlot.kSlot0)
                 .d(FlapConstants.SLOT_ZERO_D, ClosedLoopSlot.kSlot0)
-                .outputRange(-1, 1, ClosedLoopSlot.kSlot0).maxMotion
-                .maxAcceleration(FlapConstants.SLOT_ZERO_MAX_ACCELERATION, ClosedLoopSlot.kSlot0)
-                .maxVelocity(FlapConstants.SLOT_ZERO_MAX_VELOCITY, ClosedLoopSlot.kSlot0);
+                .outputRange(-1, 1, ClosedLoopSlot.kSlot0);
 
         // Apply the motor configuration with safe reset and persistence options
         m_motor.configure(m_config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
