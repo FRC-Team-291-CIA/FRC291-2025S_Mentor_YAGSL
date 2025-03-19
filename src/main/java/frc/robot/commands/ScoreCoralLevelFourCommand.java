@@ -8,39 +8,93 @@ import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorState;
 
 import frc.robot.Constants.CIAAutoConstants;
 
+/**
+ * Command for controlling the intake of a "coral" object in the robot.
+ * The command follows a sequence:
+ * 1. Run intake at an initial speed until the sensor detects the coral.
+ * 2. Adjust speed once the coral is detected.
+ * 3. Stop the intake once the coral has passed through.
+ */
 public class ScoreCoralLevelFourCommand extends Command {
 
-    private final CoralSubsystem m_coralSubsystem;
+    private final CoralSubsystem m_coralSubsystem; // Reference to the coral intake subsystem
     private final ElevatorSubsystem m_elevatorSubsystem;
-    private boolean commandDone;
+    private boolean m_commandDone; // Flag to End
 
+    private enum STAGE {
+        STAGE_ONE,
+        STAGE_TWO,
+    }
+
+    private STAGE m_currentStage;
+
+    /**
+     * Constructor for the intake command.
+     * 
+     * @param coralSubsystem The subsystem responsible for handling the coral
+     *                       intake.
+     */
     public ScoreCoralLevelFourCommand(CoralSubsystem coralSubsystem, ElevatorSubsystem elevatorSubsystem) {
         this.m_coralSubsystem = coralSubsystem;
         this.m_elevatorSubsystem = elevatorSubsystem;
 
-        this.addRequirements(m_coralSubsystem, m_elevatorSubsystem);
+        // Declare subsystem dependencies to prevent conflicts with other commands.
+        this.addRequirements(coralSubsystem, m_elevatorSubsystem);
     }
 
+    /**
+     * Initializes the command when first scheduled.
+     * Resets the tracking flags to ensure a fresh start.
+     */
     @Override
     public void initialize() {
-        commandDone = false;
+        m_currentStage = STAGE.STAGE_ONE;
+        m_commandDone = false;
     }
 
-    // Called every time the scheduler runs while the command is scheduled.
+    /**
+     * This method runs repeatedly while the command is active.
+     * It controls the speed of the intake mechanism based on sensor feedback.
+     */
     @Override
     public void execute() {
+        switch (m_currentStage) {
+            case STAGE_ONE:
+                if (m_coralSubsystem.m_intakeSensorValue) {
+                    m_currentStage = STAGE.STAGE_TWO;
+                } else {
+                    m_coralSubsystem.setSpeed(CIAAutoConstants.AUTO_SPEED_CORAL_BEFORE_ENTER);
+                }
+                break;
+            case STAGE_TWO:
+                if (!m_coralSubsystem.m_intakeSensorValue) {
+                    m_commandDone = true;
+                } else {
+                    m_coralSubsystem.setSpeed(CIAAutoConstants.AUTO_SPEED_CORAL_AFTER_ENTER);
+                }
+                break;
+        }
     }
 
-    // Called once the command ends or is interrupted.
+    /**
+     * Runs when the command is interrupted or finishes normally.
+     * Ensures the intake is stopped.
+     * 
+     * @param interrupted True if another command interrupted this one.
+     */
     @Override
     public void end(boolean interrupted) {
-        m_coralSubsystem.setSpeed(0.00);
+        m_coralSubsystem.setSpeed(0.00); // Stop the intake motor
         m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_INTAKE);
     }
 
-    // Returns true when the command should end.
+    /**
+     * Determines when the command should finish.
+     * 
+     * @return True when the coral has been fully processed.
+     */
     @Override
     public boolean isFinished() {
-        return commandDone;
+        return m_commandDone;
     }
 }
