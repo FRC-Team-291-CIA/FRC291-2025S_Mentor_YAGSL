@@ -19,8 +19,20 @@ public class IntakeCoralCommand extends Command {
     private boolean m_commandDone; // Flag to End
 
     private enum STAGE {
-        STAGE_ONE,
-        STAGE_TWO,
+        STAGE_ONE("STAGE ONE"),
+        STAGE_TWO("STAGE TWO");
+
+        private final String name;
+
+        // Constructor for STAGE enum
+        STAGE(String name) {
+            this.name = name;
+        }
+
+        // Getter method for name
+        public String getName() {
+            return name;
+        }
     }
 
     private STAGE m_currentStage;

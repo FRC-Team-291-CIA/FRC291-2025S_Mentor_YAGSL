@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.coral.CoralSubsystem;
@@ -20,10 +21,23 @@ public class ScoreCoralLevelFourCommand extends Command {
     private final CoralSubsystem m_coralSubsystem; // Reference to the coral intake subsystem
     private final ElevatorSubsystem m_elevatorSubsystem;
     private boolean m_commandDone; // Flag to End
+    private Timer m_timer;
 
     private enum STAGE {
-        STAGE_ONE,
-        STAGE_TWO,
+        STAGE_ONE("STAGE ONE"),
+        STAGE_TWO("STAGE TWO");
+
+        private final String name;
+
+        // Constructor for STAGE enum
+        STAGE(String name) {
+            this.name = name;
+        }
+
+        // Getter method for name
+        public String getName() {
+            return name;
+        }
     }
 
     private STAGE m_currentStage;
@@ -38,6 +52,8 @@ public class ScoreCoralLevelFourCommand extends Command {
         this.m_coralSubsystem = coralSubsystem;
         this.m_elevatorSubsystem = elevatorSubsystem;
 
+        this.m_timer = new Timer();
+
         // Declare subsystem dependencies to prevent conflicts with other commands.
         this.addRequirements(coralSubsystem, m_elevatorSubsystem);
     }
@@ -50,6 +66,9 @@ public class ScoreCoralLevelFourCommand extends Command {
     public void initialize() {
         m_currentStage = STAGE.STAGE_ONE;
         m_commandDone = false;
+
+        m_timer.reset();
+        m_timer.start();
     }
 
     /**
@@ -60,17 +79,20 @@ public class ScoreCoralLevelFourCommand extends Command {
     public void execute() {
         switch (m_currentStage) {
             case STAGE_ONE:
-                if (m_coralSubsystem.m_intakeSensorValue) {
+                if (m_timer.get() > 1.25) {
                     m_currentStage = STAGE.STAGE_TWO;
+                    m_timer.reset();
+                    m_timer.start();
                 } else {
-                    m_coralSubsystem.setSpeed(CIAAutoConstants.AUTO_SPEED_CORAL_BEFORE_ENTER);
+                    m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_LEVEL_FOUR);
                 }
                 break;
             case STAGE_TWO:
-                if (!m_coralSubsystem.m_intakeSensorValue) {
+                if (m_timer.get() > 2.5) {
                     m_commandDone = true;
                 } else {
-                    m_coralSubsystem.setSpeed(CIAAutoConstants.AUTO_SPEED_CORAL_AFTER_ENTER);
+                    m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_LEVEL_FOUR);
+                    m_coralSubsystem.MANUAL_FORWARD_FAST();
                 }
                 break;
         }
