@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import swervelib.SwerveDrive;
+
 import swervelib.SwerveInputStream;
 
 import com.pathplanner.lib.auto.NamedCommands;
