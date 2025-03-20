@@ -1,12 +1,49 @@
 <xml version="1.0">
 <dashboard>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
-		<location x="972" y="0"/>
-		<height>517</height>
+		<location x="217" y="151"/>
+		<width>384</width>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="217" y="328"/>
+		<width>385</width>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="571" y="7"/>
+		<height>507</height>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="844" y="2"/>
+		<height>513</height>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="2" y="302"/>
+		<width>245</width>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="216" y="5"/>
+		<height>511</height>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.MjpgStreamViewerImpl">
+		<location x="879" y="47"/>
+		<width>410</width>
+		<height>430</height>
+		<property name="MJPG Server URL" value="http://team291pi.local:1182/stream.mjpg"/>
+	</static-widget>
+	<widget field="CoralSubsystem" type="Subsystem" class="edu.wpi.first.smartdashboard.gui.elements.Subsystem">
+		<location x="373" y="36"/>
+		<width>175</width>
+	</widget>
+	<widget field="Climber Motor Current" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="361" y="367"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="1231" y="6"/>
+		<height>509</height>
 	</static-widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
 		<location x="5" y="489"/>
-		<width>998</width>
+		<width>1260</width>
 		<height>30</height>
 	</static-widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
@@ -15,40 +52,42 @@
 	</static-widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
 		<location x="0" y="-2"/>
-		<width>974</width>
+		<width>1259</width>
 	</static-widget>
 	<widget field="Pigeon 2 (v6) [18]" type="Gyro" class="edu.wpi.first.smartdashboard.gui.elements.Compass">
-		<location x="41" y="336"/>
+		<location x="-17" y="337"/>
 	</widget>
 	<widget field="SendableChooser[0]" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="38" y="38"/>
+		<location x="36" y="32"/>
 	</widget>
 	<widget field="Intake Sensor Value" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="290" y="42"/>
+		<location x="352" y="72"/>
 	</widget>
 	<widget field="Elevator Motor Left Amps" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="757" y="136"/>
+		<location x="616" y="165"/>
 	</widget>
 	<widget field="Elevator Motor Right Amps" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="751" y="162"/>
+		<location x="610" y="195"/>
+		<height>20</height>
 	</widget>
 	<widget field="Elevator Encoder Reading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="753" y="62"/>
+		<location x="617" y="134"/>
 	</widget>
 	<widget field="Angle Encoder Reading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="498" y="64"/>
+		<location x="335" y="253"/>
 	</widget>
 	<widget field="Elevator Motor State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="781" y="112"/>
+		<location x="642" y="71"/>
 	</widget>
 	<widget field="Flap State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="562" y="37"/>
+		<location x="399" y="225"/>
 	</widget>
 	<widget field="Elevator Desired Height" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="766" y="87"/>
+		<location x="627" y="102"/>
 	</widget>
 	<widget field="Elevator State" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="810" y="36"/>
+		<location x="673" y="41"/>
+		<height>20</height>
 	</widget>
 </dashboard>
 <live-window>
