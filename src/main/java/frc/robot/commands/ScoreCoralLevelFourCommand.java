@@ -69,6 +69,9 @@ public class ScoreCoralLevelFourCommand extends Command {
 
         m_timer.reset();
         m_timer.start();
+
+        System.out.println("SCORE CORAL LEVEL FOUR COMMAND");
+        System.out.println("STAGE ONE");
     }
 
     /**
@@ -79,8 +82,9 @@ public class ScoreCoralLevelFourCommand extends Command {
     public void execute() {
         switch (m_currentStage) {
             case STAGE_ONE:
-                if (m_timer.get() > 1.25) {
+                if (m_timer.get() > 1) {
                     m_currentStage = STAGE.STAGE_TWO;
+                    System.out.println("STAGE TWO");
                     m_timer.reset();
                     m_timer.start();
                 } else {
@@ -88,11 +92,12 @@ public class ScoreCoralLevelFourCommand extends Command {
                 }
                 break;
             case STAGE_TWO:
-                if (m_timer.get() > 2.5) {
+                if (m_timer.get() > 1) {
                     m_commandDone = true;
+                    System.out.println("END");
                 } else {
                     m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_LEVEL_FOUR);
-                    m_coralSubsystem.MANUAL_FORWARD_FAST();
+                    m_coralSubsystem.setSpeed(0.5);
                 }
                 break;
         }

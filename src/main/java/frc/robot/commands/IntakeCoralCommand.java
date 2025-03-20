@@ -58,6 +58,8 @@ public class IntakeCoralCommand extends Command {
     public void initialize() {
         m_currentStage = STAGE.STAGE_ONE;
         m_commandDone = false;
+        System.out.println("INTAKE CORAL COMMAND");
+        System.out.println("STAGE ONE");
     }
 
     /**
@@ -70,6 +72,7 @@ public class IntakeCoralCommand extends Command {
             case STAGE_ONE:
                 if (m_coralSubsystem.m_intakeSensorValue) {
                     m_currentStage = STAGE.STAGE_TWO;
+                    System.out.println("STAGE TWO");
                 } else {
                     m_coralSubsystem.setSpeed(CIAAutoConstants.AUTO_SPEED_CORAL_BEFORE_ENTER);
                 }
@@ -77,6 +80,7 @@ public class IntakeCoralCommand extends Command {
             case STAGE_TWO:
                 if (!m_coralSubsystem.m_intakeSensorValue) {
                     m_commandDone = true;
+                    System.out.println("DONE");
                 } else {
                     m_coralSubsystem.setSpeed(CIAAutoConstants.AUTO_SPEED_CORAL_AFTER_ENTER);
                 }

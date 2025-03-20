@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import swervelib.SwerveDrive;
 import swervelib.SwerveInputStream;
 
 import com.pathplanner.lib.auto.NamedCommands;
@@ -40,6 +40,7 @@ import frc.robot.subsystems.coral.CoralSubsystem;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 
 import frc.robot.commands.IntakeCoralCommand;
+import frc.robot.commands.ScoreCoralLevelFourCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -134,17 +135,21 @@ public class RobotContainer {
          * The container for the robot. Contains subsystems, OI devices, and commands.
          */
         public RobotContainer() {
+                DriverStation.silenceJoystickConnectionWarning(true);
+                NamedCommands.registerCommand("Coral Intake", new IntakeCoralCommand(m_coralSubsystem));
+                NamedCommands.registerCommand("Score Level Four",
+                                new ScoreCoralLevelFourCommand(m_coralSubsystem, m_elevatorSubsystem));
+
                 m_chooser.setDefaultOption("DO NOTHING", Commands.none());
                 m_chooser.addOption("Left Two Auto", drivebase.getAutonomousCommand("Left Two Auto"));
+                m_chooser.addOption("Center G One Auto", drivebase.getAutonomousCommand("Center G One Auto"));
+                m_chooser.addOption("Center H One Auto", drivebase.getAutonomousCommand("Center H One Auto"));
 
                 SmartDashboard.putData(m_chooser);
                 SmartDashboard.putData("CoralSubsystem", m_coralSubsystem);
 
                 // Configure the trigger bindings
                 configureBindings();
-                DriverStation.silenceJoystickConnectionWarning(true);
-                NamedCommands.registerCommand("test", Commands.print("I EXIST"));
-                NamedCommands.registerCommand("Coral Intake", new IntakeCoralCommand(m_coralSubsystem));
         }
 
         /**
@@ -305,7 +310,7 @@ public class RobotContainer {
 
                         // Coral
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_TOP_LEFT).whileTrue(
-                                        new IntakeCoralCommand(m_coralSubsystem));
+                                        m_coralSubsystem.MANUAL_FORWARD_SLOW());
 
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_TOP_RIGHT)
                                         .whileTrue(m_coralSubsystem.MANUAL_FORWARD_FAST());

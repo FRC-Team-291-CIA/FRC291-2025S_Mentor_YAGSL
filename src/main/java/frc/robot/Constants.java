@@ -100,7 +100,7 @@ public final class Constants {
     public static final double LOOP_TIME = 0.13; // seconds
 
     // Maximum robot speed in meters per second
-    public static final double MAX_SPEED = Units.feetToMeters(10);
+    public static final double MAX_SPEED = Units.feetToMeters(20);
 
     // Turn sensitivity multiplier
     public static final double TURN_CONSTANT = 6.00;
@@ -139,7 +139,7 @@ public final class Constants {
     public static final ArbFFUnits SLOT_ONE_FF_UNITS = ArbFFUnits.kVoltage;
 
     // Predefined elevator height positions for different levels
-    public static final double HEIGHT_CORAL_LEVEL_FOUR = -53.20; // Estimated based on manual lift.
+    public static final double HEIGHT_CORAL_LEVEL_FOUR = -51.00; // Estimated based on manual lift.
     public static final double HEIGHT_CORAL_LEVEL_THREE = -28.00; // Slightly lower than 25 for best fit.
     public static final double HEIGHT_CORAL_LEVEL_TWO = -12.00; // Slightly lower than 10 for best fit.
     public static final double HEIGHT_CORAL_LEVEL_ONE = -5.00; // Unknown value.
