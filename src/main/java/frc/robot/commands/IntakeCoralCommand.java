@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.coral.CoralSubsystem;
@@ -17,10 +18,12 @@ public class IntakeCoralCommand extends Command {
 
     private final CoralSubsystem m_coralSubsystem; // Reference to the coral intake subsystem
     private boolean m_commandDone; // Flag to End
+    private Timer m_timer;
 
     private enum STAGE {
         STAGE_ONE("STAGE ONE"),
-        STAGE_TWO("STAGE TWO");
+        STAGE_TWO("STAGE TWO"),
+        STAGE_THREE("STAGE THREE");
 
         private final String name;
 
@@ -46,6 +49,8 @@ public class IntakeCoralCommand extends Command {
     public IntakeCoralCommand(CoralSubsystem coralSubsystem) {
         this.m_coralSubsystem = coralSubsystem;
 
+        this.m_timer = new Timer();
+
         // Declare subsystem dependencies to prevent conflicts with other commands.
         this.addRequirements(coralSubsystem);
     }
@@ -59,7 +64,7 @@ public class IntakeCoralCommand extends Command {
         m_currentStage = STAGE.STAGE_ONE;
         m_commandDone = false;
         System.out.println("INTAKE CORAL COMMAND");
-        System.out.println("STAGE ONE");
+        System.out.println(m_currentStage.getName());
     }
 
     /**
@@ -72,19 +77,29 @@ public class IntakeCoralCommand extends Command {
             case STAGE_ONE:
                 if (m_coralSubsystem.m_intakeSensorValue) {
                     m_currentStage = STAGE.STAGE_TWO;
-                    System.out.println("STAGE TWO");
+                    System.out.println(m_currentStage.getName());
                 } else {
                     m_coralSubsystem.setSpeed(CIAAutoConstants.AUTO_SPEED_CORAL_BEFORE_ENTER);
                 }
                 break;
             case STAGE_TWO:
                 if (!m_coralSubsystem.m_intakeSensorValue) {
-                    m_commandDone = true;
-                    System.out.println("DONE");
+                    m_currentStage = STAGE.STAGE_THREE;
+                    m_timer.reset();
+                    m_timer.start();
+                    System.out.println("STAGE THREE");
                 } else {
                     m_coralSubsystem.setSpeed(CIAAutoConstants.AUTO_SPEED_CORAL_AFTER_ENTER);
                 }
                 break;
+            case STAGE_THREE:
+                if (m_coralSubsystem.m_intakeSensorValue) {
+                    m_commandDone = true;
+                    System.out.println("DONE");
+                } else {
+                    m_coralSubsystem.setSpeed(-CIAAutoConstants.AUTO_SPEED_CORAL_AFTER_ENTER);
+                }
+
         }
     }
 

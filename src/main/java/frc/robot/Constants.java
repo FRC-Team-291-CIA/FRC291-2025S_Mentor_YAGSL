@@ -100,7 +100,7 @@ public final class Constants {
     public static final double LOOP_TIME = 0.13; // seconds
 
     // Maximum robot speed in meters per second
-    public static final double MAX_SPEED = Units.feetToMeters(20);
+    public static final double MAX_SPEED = Units.feetToMeters(10); // 20 For Comp
 
     // Turn sensitivity multiplier
     public static final double TURN_CONSTANT = 6.00;
@@ -161,7 +161,7 @@ public final class Constants {
 
     // Sensor configuration for coral intake detection
     public static final int INTAKE_SENSOR_DIOPORT = 0;
-    public static final boolean INTAKE_SENSOR_IS_INVERTED = false;
+    public static final boolean INTAKE_SENSOR_IS_INVERTED = true;
 
     // Manual control speeds for intake system
     public static final double SPEED_MANUAL_FORWARD_SLOW = 0.2;
@@ -214,8 +214,8 @@ public final class Constants {
 
   public static class CIAAutoConstants {
     // Used in IntakeCoralCommand.java
-    public static final double AUTO_SPEED_CORAL_BEFORE_ENTER = 0.4;
-    public static final double AUTO_SPEED_CORAL_AFTER_ENTER = 0.1;
+    public static final double AUTO_SPEED_CORAL_BEFORE_ENTER = 0.5;
+    public static final double AUTO_SPEED_CORAL_AFTER_ENTER = 0.25;
   }
 
 }

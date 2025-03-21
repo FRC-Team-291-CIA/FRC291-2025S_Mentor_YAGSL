@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -313,7 +314,7 @@ public class RobotContainer {
                                         m_coralSubsystem.MANUAL_FORWARD_SLOW());
 
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_TOP_RIGHT)
-                                        .whileTrue(m_coralSubsystem.MANUAL_FORWARD_FAST());
+                                        .whileTrue(new IntakeCoralCommand(m_coralSubsystem)); // .whileTrue(m_coralSubsystem.MANUAL_FORWARD_FAST());
 
                         controllerOperator.pov(0).whileTrue(m_coralSubsystem.MANUAL_FORWARD_SLOW());
                         controllerOperator.pov(180)
