@@ -100,7 +100,7 @@ public final class Constants {
     public static final double LOOP_TIME = 0.13; // seconds
 
     // Maximum robot speed in meters per second
-    public static final double MAX_SPEED = Units.feetToMeters(10); // 20 For Comp
+    public static final double MAX_SPEED = Units.feetToMeters(20); // 20 For Comp
 
     // Turn sensitivity multiplier
     public static final double TURN_CONSTANT = 6.00;
@@ -164,9 +164,9 @@ public final class Constants {
     public static final boolean INTAKE_SENSOR_IS_INVERTED = true;
 
     // Manual control speeds for intake system
-    public static final double SPEED_MANUAL_FORWARD_SLOW = 0.2;
+    public static final double SPEED_MANUAL_FORWARD_SLOW = 0.3;
     public static final double SPEED_MANUAL_FORWARD_FAST = 0.4;
-    public static final double SPEED_MANUAL_REVERSE_SLOW = -0.2;
+    public static final double SPEED_MANUAL_REVERSE_SLOW = -0.3;
     public static final double SPEED_MANUAL_REVERSE_FAST = -0.4;
   }
 
@@ -182,7 +182,7 @@ public final class Constants {
     public static final int MOTOR_SMART_CURRENT_LIMIT = 40;
 
     // Conversion factor for motor revolutions per inch of flap travel
-    public static final double MOTOR_REVOLUTION_PER_INCH = 1;
+    public static final double MOTOR_REVOLUTION_PER_INCH = 360;
 
     // PID slot 0 constants for motor control
     public static final double SLOT_ZERO_P = 0.50;
@@ -210,6 +210,11 @@ public final class Constants {
 
     public static final double SPEED_IN = 0.5;
     public static final double SPEED_OUT = -0.5;
+  }
+
+  public static class CandleConstants {
+    public static final int CANdleID = 25;
+
   }
 
   public static class CIAAutoConstants {

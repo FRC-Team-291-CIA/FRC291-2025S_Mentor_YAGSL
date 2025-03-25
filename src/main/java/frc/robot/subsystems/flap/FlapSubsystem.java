@@ -70,10 +70,8 @@ public class FlapSubsystem extends SubsystemBase {
                 .smartCurrentLimit(FlapConstants.MOTOR_SMART_CURRENT_LIMIT); // Set current limit
 
         // Configure encoder conversion factors
-        m_config.encoder
-                .positionConversionFactor(FlapConstants.MOTOR_REVOLUTION_PER_INCH)
-                .velocityConversionFactor(FlapConstants.MOTOR_REVOLUTION_PER_INCH);
 
+        m_config.absoluteEncoder.positionConversionFactor(360);
         // Configure closed-loop control settings
         m_config.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)

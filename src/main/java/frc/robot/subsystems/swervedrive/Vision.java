@@ -141,7 +141,6 @@ public class Vision {
     for (Cameras camera : Cameras.values()) {
       Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
       if (poseEst.isPresent()) {
-        System.out.println("I FOUND A POSE");
         var pose = poseEst.get();
         swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(),
             pose.timestampSeconds,
@@ -392,9 +391,9 @@ public class Vision {
       robotToCamTransform = new Transform3d(robotToCamTranslation, robotToCamRotation);
 
       poseEstimator = new PhotonPoseEstimator(Vision.fieldLayout,
-          PoseStrategy.LOWEST_AMBIGUITY, // PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+          PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
           robotToCamTransform);
-      // poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+      poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
       this.singleTagStdDevs = singleTagStdDevs;
       this.multiTagStdDevs = multiTagStdDevsMatrix;

@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -42,6 +42,7 @@ import frc.robot.subsystems.climber.ClimberSubsystem;
 
 import frc.robot.commands.IntakeCoralCommand;
 import frc.robot.commands.ScoreCoralLevelFourCommand;
+import frc.robot.commands.ScoreCoralLevelThreeCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -140,6 +141,9 @@ public class RobotContainer {
                 NamedCommands.registerCommand("Coral Intake", new IntakeCoralCommand(m_coralSubsystem));
                 NamedCommands.registerCommand("Score Level Four",
                                 new ScoreCoralLevelFourCommand(m_coralSubsystem, m_elevatorSubsystem));
+
+                NamedCommands.registerCommand("Score Level Three",
+                                new ScoreCoralLevelThreeCommand(m_coralSubsystem, m_elevatorSubsystem));
 
                 m_chooser.setDefaultOption("DO NOTHING", Commands.none());
                 m_chooser.addOption("Left Two Auto", drivebase.getAutonomousCommand("Left Two Auto"));
@@ -265,25 +269,43 @@ public class RobotContainer {
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_A).onTrue(Commands
                                         .runOnce(() -> m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_INTAKE)));
 
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_A).onTrue(Commands
+                                        .runOnce(() -> drivebase.setSwerveSpeed(true)));
+
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_B).onTrue(Commands
                                         .runOnce(() -> m_elevatorSubsystem
                                                         .setWantedState(ElevatorState.CORAL_LEVEL_TWO)));
+
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_B).onTrue(Commands
+                                        .runOnce(() -> drivebase.setSwerveSpeed(false)));
 
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_Y).onTrue(Commands
                                         .runOnce(() -> m_elevatorSubsystem
                                                         .setWantedState(ElevatorState.CORAL_LEVEL_THREE)));
 
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_Y).onTrue(Commands
+                                        .runOnce(() -> drivebase.setSwerveSpeed(false)));
+
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_X).onTrue(Commands
                                         .runOnce(() -> m_elevatorSubsystem
                                                         .setWantedState(ElevatorState.CORAL_LEVEL_FOUR)));
+
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_X).onTrue(Commands
+                                        .runOnce(() -> drivebase.setSwerveSpeed(false)));
 
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_START).onTrue(Commands
                                         .runOnce(() -> m_elevatorSubsystem
                                                         .setWantedState(ElevatorState.PARK)));
 
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_START).onTrue(Commands
+                                        .runOnce(() -> drivebase.setSwerveSpeed(true)));
+
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_BACK).onTrue(Commands
                                         .runOnce(() -> m_elevatorSubsystem
                                                         .setWantedState(ElevatorState.NO_POWER)));
+
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_BACK).onTrue(Commands
+                                        .runOnce(() -> drivebase.setSwerveSpeed(true)));
                         // Flap
 
                         if (FlapConstants.TEST_STATE_BASED) {
@@ -311,7 +333,7 @@ public class RobotContainer {
 
                         // Coral
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_TOP_LEFT).whileTrue(
-                                        m_coralSubsystem.MANUAL_FORWARD_SLOW());
+                                        m_coralSubsystem.MANUAL_FORWARD_FAST());
 
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_BUMPER_TOP_RIGHT)
                                         .whileTrue(new IntakeCoralCommand(m_coralSubsystem)); // .whileTrue(m_coralSubsystem.MANUAL_FORWARD_FAST());

@@ -62,7 +62,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Enable vision odometry updates while driving.
    */
-  private final boolean visionDriveTest = true;
+  private final boolean visionDriveTest = false;
   /**
    * PhotonVision class to keep an accurate odometry.
    */
@@ -114,7 +114,7 @@ public class SwerveSubsystem extends SubsystemBase {
       swerveDrive.stopOdometryThread();
     }
     setupPathPlanner();
-    RobotModeTriggers.autonomous().onTrue(Commands.runOnce(this::zeroGyroWithAlliance));
+    // RobotModeTriggers.autonomous().onTrue(Commands.runOnce(this::zeroGyroWithAlliance));
   }
 
   /**
@@ -581,11 +581,23 @@ public class SwerveSubsystem extends SubsystemBase {
     if (isRedAlliance()) {
       zeroGyro();
       // Set the pose 180 degrees
-      resetOdometry(new Pose2d(getPose().getTranslation(), Rotation2d.fromDegrees(180)));
     } else {
       zeroGyro();
+
+      resetOdometry(new Pose2d(getPose().getTranslation(), Rotation2d.fromDegrees(180)));
     }
   }
+
+  // public void zeroGyroWithAlliance() {
+  // if (isRedAlliance()) {
+  // zeroGyro();
+  // // Set the pose 180 degrees
+  // resetOdometry(new Pose2d(getPose().getTranslation(),
+  // Rotation2d.fromDegrees(180)));
+  // } else {
+  // zeroGyro();
+  // }
+  // }
 
   /**
    * Sets the drive motors to brake/coast mode.
@@ -715,5 +727,15 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public SwerveDrive getSwerveDrive() {
     return swerveDrive;
+  }
+
+  public void setSwerveSpeed(boolean isFast) {
+    if (isFast) {
+      swerveDrive.setMaximumAllowableSpeeds(Units.feetToMeters(20), 1.57079633);
+      System.out.println("Fast");
+    } else {
+      swerveDrive.setMaximumAllowableSpeeds(Units.feetToMeters(10), 1.57079633);
+      System.out.println("Slow");
+    }
   }
 }
