@@ -731,10 +731,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void setSwerveSpeed(boolean isFast) {
     if (isFast) {
-      swerveDrive.setMaximumAllowableSpeeds(Units.feetToMeters(20), 1.57079633);
+      swerveDrive.setMaximumAllowableSpeeds(Units.feetToMeters(20), 6);
       System.out.println("Fast");
     } else {
-      swerveDrive.setMaximumAllowableSpeeds(Units.feetToMeters(10), 1.57079633);
+      swerveDrive.setMaximumAllowableSpeeds(Units.feetToMeters(10), 3);
       System.out.println("Slow");
     }
   }
