@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Newton;
+
 import java.io.File;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import swervelib.SwerveInputStream;
@@ -38,6 +41,8 @@ import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorState;
 import frc.robot.subsystems.flap.FlapSubsystem;
 import frc.robot.subsystems.flap.FlapSubsystem.FlapState;
 import frc.robot.subsystems.coral.CoralSubsystem;
+import frc.robot.subsystems.candle.CandleSubsystem;
+import frc.robot.subsystems.candle.CandleSubsystem.AnimationTypes;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 
 import frc.robot.commands.IntakeCoralCommand;
@@ -65,6 +70,7 @@ public class RobotContainer {
         private final FlapSubsystem m_flapSubsystem = new FlapSubsystem();
         private final CoralSubsystem m_coralSubsystem = new CoralSubsystem();
         private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+        private final CandleSubsystem m_candleSubsystem = new CandleSubsystem();
 
         /**
          * Converts driver input into a field-relative ChassisSpeeds that is controlled
@@ -148,10 +154,14 @@ public class RobotContainer {
                 m_chooser.setDefaultOption("DO NOTHING", Commands.none());
                 m_chooser.addOption("Left Two Auto", drivebase.getAutonomousCommand("Left Two Auto"));
                 m_chooser.addOption("Center G One Auto", drivebase.getAutonomousCommand("Center G One Auto"));
-                m_chooser.addOption("Center H One Auto", drivebase.getAutonomousCommand("Center H One Auto"));
+                m_chooser.addOption("Center H One Auto Level Three",
+                                drivebase.getAutonomousCommand("Center H One Auto Level Three"));
 
                 SmartDashboard.putData(m_chooser);
                 SmartDashboard.putData("CoralSubsystem", m_coralSubsystem);
+
+                RobotModeTriggers.autonomous().onTrue(Commands.runOnce(() -> drivebase.setSwerveSpeed(true)));
+                RobotModeTriggers.teleop().onTrue(Commands.runOnce(() -> drivebase.setSwerveSpeed(true)));
 
                 // Configure the trigger bindings
                 configureBindings();
@@ -272,12 +282,20 @@ public class RobotContainer {
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_A).onTrue(Commands
                                         .runOnce(() -> drivebase.setSwerveSpeed(true)));
 
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_A).onTrue(Commands
+                                        .runOnce(() -> m_candleSubsystem
+                                                        .setWantedState(AnimationTypes.Fire)));
+
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_B).onTrue(Commands
                                         .runOnce(() -> m_elevatorSubsystem
                                                         .setWantedState(ElevatorState.CORAL_LEVEL_TWO)));
 
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_B).onTrue(Commands
                                         .runOnce(() -> drivebase.setSwerveSpeed(false)));
+
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_B).onTrue(Commands
+                                        .runOnce(() -> m_candleSubsystem
+                                                        .setWantedState(AnimationTypes.Rainbow)));
 
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_Y).onTrue(Commands
                                         .runOnce(() -> m_elevatorSubsystem
@@ -286,12 +304,20 @@ public class RobotContainer {
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_Y).onTrue(Commands
                                         .runOnce(() -> drivebase.setSwerveSpeed(false)));
 
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_Y).onTrue(Commands
+                                        .runOnce(() -> m_candleSubsystem
+                                                        .setWantedState(AnimationTypes.Rainbow)));
+
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_X).onTrue(Commands
                                         .runOnce(() -> m_elevatorSubsystem
                                                         .setWantedState(ElevatorState.CORAL_LEVEL_FOUR)));
 
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_X).onTrue(Commands
                                         .runOnce(() -> drivebase.setSwerveSpeed(false)));
+
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_X).onTrue(Commands
+                                        .runOnce(() -> m_candleSubsystem
+                                                        .setWantedState(AnimationTypes.Rainbow)));
 
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_START).onTrue(Commands
                                         .runOnce(() -> m_elevatorSubsystem
@@ -300,12 +326,20 @@ public class RobotContainer {
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_START).onTrue(Commands
                                         .runOnce(() -> drivebase.setSwerveSpeed(true)));
 
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_START).onTrue(Commands
+                                        .runOnce(() -> m_candleSubsystem
+                                                        .setWantedState(AnimationTypes.Rainbow)));
+
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_BACK).onTrue(Commands
                                         .runOnce(() -> m_elevatorSubsystem
                                                         .setWantedState(ElevatorState.NO_POWER)));
 
                         controllerOperator.button(ControllerOperatorConstants.BUTTON_BACK).onTrue(Commands
                                         .runOnce(() -> drivebase.setSwerveSpeed(true)));
+
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_BACK).onTrue(Commands
+                                        .runOnce(() -> m_candleSubsystem
+                                                        .setWantedState(AnimationTypes.Rainbow)));
                         // Flap
 
                         if (FlapConstants.TEST_STATE_BASED) {
