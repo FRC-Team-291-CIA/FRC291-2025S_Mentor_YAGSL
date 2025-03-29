@@ -31,6 +31,7 @@ public class FlapSubsystem extends SubsystemBase {
     // Enum to represent different flap states
     public enum FlapState {
         UP(FlapConstants.ANGLE_UP, "UP"),
+        LEVEL(FlapConstants.ANGLE_LEVEL, "LEVEL"),
         DOWN(FlapConstants.ANGLE_DOWN, "DOWN"),
         DISABLED(FlapConstants.ANGLE_DISBALED, "DISABLED");
 

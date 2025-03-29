@@ -27,10 +27,10 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
 import frc.robot.subsystems.swervedrive.Vision.Cameras;
@@ -54,6 +54,15 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveSubsystem extends SubsystemBase {
+
+  public enum DriveSpeedState {
+    FAST,
+    NORMAL,
+    SLOW,
+    PRECISION
+  }
+
+  private DriveSpeedState m_currentDriveSpeedState = DriveSpeedState.NORMAL;
 
   /**
    * Swerve drive object.
@@ -144,6 +153,7 @@ public class SwerveSubsystem extends SubsystemBase {
     if (visionDriveTest) {
       swerveDrive.updateOdometry();
       vision.updatePoseEstimation(swerveDrive);
+      SmartDashboard.putString("DRIVE SPEED STATE", m_currentDriveSpeedState.toString());
     }
   }
 
@@ -729,13 +739,21 @@ public class SwerveSubsystem extends SubsystemBase {
     return swerveDrive;
   }
 
-  public void setSwerveSpeed(boolean isFast) {
-    if (isFast) {
-      swerveDrive.setMaximumAllowableSpeeds(Units.feetToMeters(20), 6);
-      System.out.println("Fast");
-    } else {
-      swerveDrive.setMaximumAllowableSpeeds(Units.feetToMeters(10), 3);
-      System.out.println("Slow");
+  public void setDriveSpeed(DriveSpeedState driveSpeedState) {
+    m_currentDriveSpeedState = driveSpeedState;
+    switch (driveSpeedState) {
+      case FAST:
+        swerveDrive.setMaximumAllowableSpeeds(Units.feetToMeters(25), 8);
+        break;
+      case NORMAL:
+        swerveDrive.setMaximumAllowableSpeeds(Units.feetToMeters(20), 6);
+        break;
+      case SLOW:
+        swerveDrive.setMaximumAllowableSpeeds(Units.feetToMeters(4), 3);
+        break;
+      case PRECISION:
+        swerveDrive.setMaximumAllowableSpeeds(Units.feetToMeters(2), 2);
+        break;
     }
   }
 }

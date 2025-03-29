@@ -98,6 +98,11 @@
           "visible": true
         }
       },
+      "/SmartDashboard/CoralSubsystem": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "OdometryPose": {
           "arrowColor": [
@@ -160,6 +165,9 @@
       "open": true
     },
     "Connections": {
+      "open": true
+    },
+    "Server": {
       "open": true
     },
     "SmartDashboard-NT3@127.0.0.1:3183": {

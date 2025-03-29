@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Newton;
-
 import java.io.File;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -36,6 +34,7 @@ import frc.robot.Constants.ControllerOperatorConstants;
 import frc.robot.Constants.FlapConstants;
 
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem.DriveSpeedState;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorState;
 import frc.robot.subsystems.flap.FlapSubsystem;
@@ -46,8 +45,7 @@ import frc.robot.subsystems.candle.CandleSubsystem.AnimationTypes;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 
 import frc.robot.commands.IntakeCoralCommand;
-import frc.robot.commands.ScoreCoralLevelFourCommand;
-import frc.robot.commands.ScoreCoralLevelThreeCommand;
+import frc.robot.commands.ScoreCoralCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -144,12 +142,18 @@ public class RobotContainer {
          */
         public RobotContainer() {
                 DriverStation.silenceJoystickConnectionWarning(true);
-                NamedCommands.registerCommand("Coral Intake", new IntakeCoralCommand(m_coralSubsystem));
-                NamedCommands.registerCommand("Score Level Four",
-                                new ScoreCoralLevelFourCommand(m_coralSubsystem, m_elevatorSubsystem));
 
+                NamedCommands.registerCommand("Coral Intake", new IntakeCoralCommand(m_coralSubsystem));
+
+                NamedCommands.registerCommand("Score Level Four",
+                                new ScoreCoralCommand(m_coralSubsystem, m_elevatorSubsystem,
+                                                ElevatorState.CORAL_LEVEL_FOUR));
                 NamedCommands.registerCommand("Score Level Three",
-                                new ScoreCoralLevelThreeCommand(m_coralSubsystem, m_elevatorSubsystem));
+                                new ScoreCoralCommand(m_coralSubsystem, m_elevatorSubsystem,
+                                                ElevatorState.CORAL_LEVEL_THREE));
+                NamedCommands.registerCommand("Score Level Two",
+                                new ScoreCoralCommand(m_coralSubsystem, m_elevatorSubsystem,
+                                                ElevatorState.CORAL_LEVEL_TWO));
 
                 m_chooser.setDefaultOption("DO NOTHING", Commands.none());
                 m_chooser.addOption("Left Two Auto", drivebase.getAutonomousCommand("Left Two Auto"));
@@ -160,8 +164,16 @@ public class RobotContainer {
                 SmartDashboard.putData(m_chooser);
                 SmartDashboard.putData("CoralSubsystem", m_coralSubsystem);
 
-                RobotModeTriggers.autonomous().onTrue(Commands.runOnce(() -> drivebase.setSwerveSpeed(true)));
-                RobotModeTriggers.teleop().onTrue(Commands.runOnce(() -> drivebase.setSwerveSpeed(true)));
+                RobotModeTriggers.autonomous()
+                                .onTrue(Commands.runOnce(() -> drivebase.setDriveSpeed(DriveSpeedState.NORMAL)));
+                RobotModeTriggers.teleop()
+                                .onTrue(Commands.runOnce(() -> drivebase.setDriveSpeed(DriveSpeedState.NORMAL)));
+                RobotModeTriggers.teleop()
+                                .onTrue(Commands.runOnce(
+                                                () -> m_candleSubsystem.setWantedState(AnimationTypes.Fire)));
+                RobotModeTriggers.disabled()
+                                .onTrue(Commands.runOnce(
+                                                () -> m_candleSubsystem.setWantedState(AnimationTypes.Larson)));
 
                 // Configure the trigger bindings
                 configureBindings();
@@ -258,7 +270,7 @@ public class RobotContainer {
                         // ---------------------------- Driver Controller ---------------------------
 
                         controllerDriver.button(
-                                        ControllerDriverConstants.BUTTON_A)
+                                        ControllerDriverConstants.BUTTON_START)
                                         .onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
                         controllerDriver.button(
@@ -274,72 +286,58 @@ public class RobotContainer {
                         controllerDriver.button(ControllerDriverConstants.BUTTON_BUMPER_RIGHT)
                                         .whileTrue(Commands.run(m_climberSubsystem::in, m_climberSubsystem));
 
+                        controllerDriver.button(ControllerDriverConstants.BUTTON_X).onTrue(Commands
+                                        .runOnce(() -> drivebase.setDriveSpeed(DriveSpeedState.NORMAL)));
+
+                        controllerDriver.button(ControllerDriverConstants.BUTTON_A)
+                                        .onTrue(Commands.runOnce(() -> drivebase.setDriveSpeed(DriveSpeedState.SLOW)));
+
+                        controllerDriver.button(ControllerDriverConstants.BUTTON_B)
+                                        .onTrue(Commands.runOnce(
+                                                        () -> drivebase.setDriveSpeed(DriveSpeedState.PRECISION)));
+
                         // ---------------------------- Operator Controller ---------------------------
                         // Elevator
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_A).onTrue(Commands
-                                        .runOnce(() -> m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_INTAKE)));
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_A).onTrue(Commands.parallel(
+                                        Commands.runOnce(() -> m_elevatorSubsystem
+                                                        .setWantedState(ElevatorState.CORAL_INTAKE)),
+                                        Commands.runOnce(() -> drivebase.setDriveSpeed(DriveSpeedState.NORMAL)),
+                                        Commands.runOnce(() -> m_candleSubsystem.setWantedState(AnimationTypes.Fire))));
 
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_A).onTrue(Commands
-                                        .runOnce(() -> drivebase.setSwerveSpeed(true)));
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_B).onTrue(Commands.parallel(
+                                        Commands.runOnce(() -> m_elevatorSubsystem
+                                                        .setWantedState(ElevatorState.CORAL_LEVEL_TWO)),
+                                        Commands.runOnce(() -> drivebase.setDriveSpeed(DriveSpeedState.SLOW)),
+                                        Commands.runOnce(() -> m_candleSubsystem
+                                                        .setWantedState(AnimationTypes.Rainbow))));
 
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_A).onTrue(Commands
-                                        .runOnce(() -> m_candleSubsystem
-                                                        .setWantedState(AnimationTypes.Fire)));
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_Y).onTrue(Commands.parallel(
+                                        Commands.runOnce(() -> m_elevatorSubsystem
+                                                        .setWantedState(ElevatorState.CORAL_LEVEL_THREE)),
+                                        Commands.runOnce(() -> drivebase.setDriveSpeed(DriveSpeedState.SLOW)),
+                                        Commands.runOnce(() -> m_candleSubsystem
+                                                        .setWantedState(AnimationTypes.Rainbow))));
 
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_B).onTrue(Commands
-                                        .runOnce(() -> m_elevatorSubsystem
-                                                        .setWantedState(ElevatorState.CORAL_LEVEL_TWO)));
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_X).onTrue(Commands.parallel(
+                                        Commands.runOnce(() -> m_elevatorSubsystem
+                                                        .setWantedState(ElevatorState.CORAL_LEVEL_FOUR)),
+                                        Commands.runOnce(() -> drivebase.setDriveSpeed(DriveSpeedState.SLOW)),
+                                        Commands.runOnce(() -> m_candleSubsystem
+                                                        .setWantedState(AnimationTypes.Rainbow))));
 
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_B).onTrue(Commands
-                                        .runOnce(() -> drivebase.setSwerveSpeed(false)));
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_START).onTrue(Commands.parallel(
+                                        Commands.runOnce(() -> m_elevatorSubsystem
+                                                        .setWantedState(ElevatorState.PARK)),
+                                        Commands.runOnce(() -> drivebase.setDriveSpeed(DriveSpeedState.SLOW)),
+                                        Commands.runOnce(() -> m_candleSubsystem
+                                                        .setWantedState(AnimationTypes.Rainbow))));
 
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_B).onTrue(Commands
-                                        .runOnce(() -> m_candleSubsystem
-                                                        .setWantedState(AnimationTypes.Rainbow)));
-
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_Y).onTrue(Commands
-                                        .runOnce(() -> m_elevatorSubsystem
-                                                        .setWantedState(ElevatorState.CORAL_LEVEL_THREE)));
-
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_Y).onTrue(Commands
-                                        .runOnce(() -> drivebase.setSwerveSpeed(false)));
-
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_Y).onTrue(Commands
-                                        .runOnce(() -> m_candleSubsystem
-                                                        .setWantedState(AnimationTypes.Rainbow)));
-
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_X).onTrue(Commands
-                                        .runOnce(() -> m_elevatorSubsystem
-                                                        .setWantedState(ElevatorState.CORAL_LEVEL_FOUR)));
-
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_X).onTrue(Commands
-                                        .runOnce(() -> drivebase.setSwerveSpeed(false)));
-
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_X).onTrue(Commands
-                                        .runOnce(() -> m_candleSubsystem
-                                                        .setWantedState(AnimationTypes.Rainbow)));
-
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_START).onTrue(Commands
-                                        .runOnce(() -> m_elevatorSubsystem
-                                                        .setWantedState(ElevatorState.PARK)));
-
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_START).onTrue(Commands
-                                        .runOnce(() -> drivebase.setSwerveSpeed(true)));
-
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_START).onTrue(Commands
-                                        .runOnce(() -> m_candleSubsystem
-                                                        .setWantedState(AnimationTypes.Rainbow)));
-
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_BACK).onTrue(Commands
-                                        .runOnce(() -> m_elevatorSubsystem
-                                                        .setWantedState(ElevatorState.NO_POWER)));
-
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_BACK).onTrue(Commands
-                                        .runOnce(() -> drivebase.setSwerveSpeed(true)));
-
-                        controllerOperator.button(ControllerOperatorConstants.BUTTON_BACK).onTrue(Commands
-                                        .runOnce(() -> m_candleSubsystem
-                                                        .setWantedState(AnimationTypes.Rainbow)));
+                        controllerOperator.button(ControllerOperatorConstants.BUTTON_BACK).onTrue(Commands.parallel(
+                                        Commands.runOnce(() -> m_elevatorSubsystem
+                                                        .setWantedState(ElevatorState.NO_POWER)),
+                                        Commands.runOnce(() -> drivebase.setDriveSpeed(DriveSpeedState.SLOW)),
+                                        Commands.runOnce(() -> m_candleSubsystem
+                                                        .setWantedState(AnimationTypes.Rainbow))));
                         // Flap
 
                         if (FlapConstants.TEST_STATE_BASED) {

@@ -1,12 +1,14 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
-import frc.robot.subsystems.coral.CoralSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem.ElevatorState;
-
+import frc.robot.subsystems.flap.FlapSubsystem;
+import frc.robot.subsystems.flap.FlapSubsystem.FlapState;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.Constants.CIAAutoConstants;
 
 /**
@@ -16,28 +18,20 @@ import frc.robot.Constants.CIAAutoConstants;
  * 2. Adjust speed once the coral is detected.
  * 3. Stop the intake once the coral has passed through.
  */
-public class ScoreCoralLevelThreeCommand extends Command {
+public class AlgaeFlapCommand extends Command {
 
-    private final CoralSubsystem m_coralSubsystem; // Reference to the coral intake subsystem
     private final ElevatorSubsystem m_elevatorSubsystem;
+    private final FlapSubsystem m_flapSubsystem;
+    private final SwerveSubsystem m_drivebase;;
+    private ElevatorState m_elevatorLevel; // Desired elevator level for the coral intake
     private boolean m_commandDone; // Flag to End
     private Timer m_timer;
 
     private enum STAGE {
-        STAGE_ONE("STAGE ONE"),
-        STAGE_TWO("STAGE TWO");
-
-        private final String name;
-
-        // Constructor for STAGE enum
-        STAGE(String name) {
-            this.name = name;
-        }
-
-        // Getter method for name
-        public String getName() {
-            return name;
-        }
+        STAGE_ONE,
+        STAGE_TWO,
+        STAGE_THREE,
+        STAGE_FOUR;
     }
 
     private STAGE m_currentStage;
@@ -48,14 +42,18 @@ public class ScoreCoralLevelThreeCommand extends Command {
      * @param coralSubsystem The subsystem responsible for handling the coral
      *                       intake.
      */
-    public ScoreCoralLevelThreeCommand(CoralSubsystem coralSubsystem, ElevatorSubsystem elevatorSubsystem) {
-        this.m_coralSubsystem = coralSubsystem;
+    public AlgaeFlapCommand(ElevatorSubsystem elevatorSubsystem, FlapSubsystem flapSubsystem, SwerveSubsystem drivebase,
+            ElevatorState elevatorLevel) {
         this.m_elevatorSubsystem = elevatorSubsystem;
+        this.m_elevatorLevel = elevatorLevel;
+
+        this.m_flapSubsystem = flapSubsystem;
+        this.m_drivebase = drivebase;
 
         this.m_timer = new Timer();
 
         // Declare subsystem dependencies to prevent conflicts with other commands.
-        this.addRequirements(coralSubsystem, m_elevatorSubsystem);
+        this.addRequirements(m_elevatorSubsystem, m_flapSubsystem, m_drivebase);
     }
 
     /**
@@ -70,8 +68,8 @@ public class ScoreCoralLevelThreeCommand extends Command {
         m_timer.reset();
         m_timer.start();
 
-        System.out.println("SCORE CORAL LEVEL Three COMMAND");
-        System.out.println("STAGE ONE");
+        System.out.println("SCORE CORAL COMMAND: " + m_elevatorLevel.getName());
+        System.out.println(m_currentStage.toString());
     }
 
     /**
@@ -84,20 +82,43 @@ public class ScoreCoralLevelThreeCommand extends Command {
             case STAGE_ONE:
                 if (m_timer.get() > 1) {
                     m_currentStage = STAGE.STAGE_TWO;
-                    System.out.println("STAGE TWO");
+                    System.out.println(m_currentStage.toString());
                     m_timer.reset();
                     m_timer.start();
                 } else {
-                    m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_LEVEL_THREE);
+                    m_elevatorSubsystem.setWantedState(m_elevatorLevel);
+                    m_flapSubsystem.setWantedState(FlapState.UP);
                 }
                 break;
             case STAGE_TWO:
                 if (m_timer.get() > 1) {
-                    m_commandDone = true;
-                    System.out.println("END");
+                    m_currentStage = STAGE.STAGE_THREE;
+                    System.out.println(m_currentStage.toString());
+                    m_timer.reset();
+                    m_timer.start();
                 } else {
-                    m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_LEVEL_THREE);
-                    m_coralSubsystem.setSpeed(0.5);
+                    m_elevatorSubsystem.setWantedState(m_elevatorLevel);
+                    m_flapSubsystem.setWantedState(FlapState.LEVEL);
+                }
+                break;
+            case STAGE_THREE:
+                if (m_timer.get() > 0.5) {
+                    m_currentStage = STAGE.STAGE_FOUR;
+                    System.out.println(m_currentStage.toString());
+                    m_timer.reset();
+                    m_timer.start();
+                } else {
+                    m_elevatorSubsystem.setWantedState(m_elevatorLevel);
+                    m_flapSubsystem.setWantedState(FlapState.UP);
+                }
+                break;
+            case STAGE_FOUR:
+                if (m_timer.get() > 0.5) {
+                    m_commandDone = true; // Mark the command as done
+                } else {
+                    m_elevatorSubsystem.setWantedState(m_elevatorLevel);
+                    m_flapSubsystem.setWantedState(FlapState.UP);
+                    m_drivebase.drive(new ChassisSpeeds(-5, 0, 0)); // Reverse the robot to clear the coral
                 }
                 break;
         }
@@ -111,7 +132,7 @@ public class ScoreCoralLevelThreeCommand extends Command {
      */
     @Override
     public void end(boolean interrupted) {
-        m_coralSubsystem.setSpeed(0.00); // Stop the intake motor
+        System.out.println("SCORE CORAL COMMAND: COMMAND COMPLETE");
         m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_INTAKE);
     }
 

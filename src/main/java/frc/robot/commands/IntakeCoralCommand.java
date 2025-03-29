@@ -21,21 +21,9 @@ public class IntakeCoralCommand extends Command {
     private Timer m_timer;
 
     private enum STAGE {
-        STAGE_ONE("STAGE ONE"),
-        STAGE_TWO("STAGE TWO"),
-        STAGE_THREE("STAGE THREE");
-
-        private final String name;
-
-        // Constructor for STAGE enum
-        STAGE(String name) {
-            this.name = name;
-        }
-
-        // Getter method for name
-        public String getName() {
-            return name;
-        }
+        STAGE_ONE,
+        STAGE_TWO,
+        STAGE_THREE;
     }
 
     private STAGE m_currentStage;
@@ -64,7 +52,7 @@ public class IntakeCoralCommand extends Command {
         m_currentStage = STAGE.STAGE_ONE;
         m_commandDone = false;
         System.out.println("INTAKE CORAL COMMAND");
-        System.out.println(m_currentStage.getName());
+        System.out.println(m_currentStage.toString());
     }
 
     /**
@@ -77,7 +65,7 @@ public class IntakeCoralCommand extends Command {
             case STAGE_ONE:
                 if (m_coralSubsystem.m_intakeSensorValue) {
                     m_currentStage = STAGE.STAGE_TWO;
-                    System.out.println(m_currentStage.getName());
+                    System.out.println(m_currentStage.toString());
                 } else {
                     m_coralSubsystem.setSpeed(CIAAutoConstants.AUTO_SPEED_CORAL_BEFORE_ENTER);
                 }
@@ -87,7 +75,7 @@ public class IntakeCoralCommand extends Command {
                     m_currentStage = STAGE.STAGE_THREE;
                     m_timer.reset();
                     m_timer.start();
-                    System.out.println("STAGE THREE");
+                    System.out.println(m_currentStage.toString());
                 } else {
                     m_coralSubsystem.setSpeed(CIAAutoConstants.AUTO_SPEED_CORAL_AFTER_ENTER);
                 }
@@ -95,7 +83,6 @@ public class IntakeCoralCommand extends Command {
             case STAGE_THREE:
                 if (m_coralSubsystem.m_intakeSensorValue) {
                     m_commandDone = true;
-                    System.out.println("DONE");
                 } else {
                     m_coralSubsystem.setSpeed(-CIAAutoConstants.AUTO_SPEED_CORAL_AFTER_ENTER);
                 }
@@ -111,6 +98,7 @@ public class IntakeCoralCommand extends Command {
      */
     @Override
     public void end(boolean interrupted) {
+        System.out.println("INTAKE CORAL COMMAND: COMMAND COMPLETE");
         m_coralSubsystem.setSpeed(0.00); // Stop the intake motor
     }
 

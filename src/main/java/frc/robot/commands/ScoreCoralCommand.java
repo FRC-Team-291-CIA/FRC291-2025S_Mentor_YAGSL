@@ -16,28 +16,17 @@ import frc.robot.Constants.CIAAutoConstants;
  * 2. Adjust speed once the coral is detected.
  * 3. Stop the intake once the coral has passed through.
  */
-public class ScoreCoralLevelFourCommand extends Command {
+public class ScoreCoralCommand extends Command {
 
     private final CoralSubsystem m_coralSubsystem; // Reference to the coral intake subsystem
     private final ElevatorSubsystem m_elevatorSubsystem;
+    private ElevatorState m_elevatorLevel; // Desired elevator level for the coral intake
     private boolean m_commandDone; // Flag to End
     private Timer m_timer;
 
     private enum STAGE {
-        STAGE_ONE("STAGE ONE"),
-        STAGE_TWO("STAGE TWO");
-
-        private final String name;
-
-        // Constructor for STAGE enum
-        STAGE(String name) {
-            this.name = name;
-        }
-
-        // Getter method for name
-        public String getName() {
-            return name;
-        }
+        STAGE_ONE,
+        STAGE_TWO;
     }
 
     private STAGE m_currentStage;
@@ -48,9 +37,11 @@ public class ScoreCoralLevelFourCommand extends Command {
      * @param coralSubsystem The subsystem responsible for handling the coral
      *                       intake.
      */
-    public ScoreCoralLevelFourCommand(CoralSubsystem coralSubsystem, ElevatorSubsystem elevatorSubsystem) {
+    public ScoreCoralCommand(CoralSubsystem coralSubsystem, ElevatorSubsystem elevatorSubsystem,
+            ElevatorState elevatorLevel) {
         this.m_coralSubsystem = coralSubsystem;
         this.m_elevatorSubsystem = elevatorSubsystem;
+        this.m_elevatorLevel = elevatorLevel;
 
         this.m_timer = new Timer();
 
@@ -70,8 +61,8 @@ public class ScoreCoralLevelFourCommand extends Command {
         m_timer.reset();
         m_timer.start();
 
-        System.out.println("SCORE CORAL LEVEL FOUR COMMAND");
-        System.out.println("STAGE ONE");
+        System.out.println("SCORE CORAL COMMAND: " + m_elevatorLevel.getName());
+        System.out.println(m_currentStage.toString());
     }
 
     /**
@@ -84,19 +75,18 @@ public class ScoreCoralLevelFourCommand extends Command {
             case STAGE_ONE:
                 if (m_timer.get() > 1) {
                     m_currentStage = STAGE.STAGE_TWO;
-                    System.out.println("STAGE TWO");
+                    System.out.println(m_currentStage.toString());
                     m_timer.reset();
                     m_timer.start();
                 } else {
-                    m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_LEVEL_FOUR);
+                    m_elevatorSubsystem.setWantedState(m_elevatorLevel);
                 }
                 break;
             case STAGE_TWO:
                 if (m_timer.get() > 1) {
                     m_commandDone = true;
-                    System.out.println("END");
                 } else {
-                    m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_LEVEL_FOUR);
+                    m_elevatorSubsystem.setWantedState(m_elevatorLevel);
                     m_coralSubsystem.setSpeed(0.5);
                 }
                 break;
@@ -111,6 +101,7 @@ public class ScoreCoralLevelFourCommand extends Command {
      */
     @Override
     public void end(boolean interrupted) {
+        System.out.println("SCORE CORAL COMMAND: COMMAND COMPLETE");
         m_coralSubsystem.setSpeed(0.00); // Stop the intake motor
         m_elevatorSubsystem.setWantedState(ElevatorState.CORAL_INTAKE);
     }

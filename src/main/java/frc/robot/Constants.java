@@ -192,7 +192,8 @@ public final class Constants {
     public static final ArbFFUnits SLOT_ZERO_FF_UNITS = ArbFFUnits.kPercentOut;
 
     // Predefined angle positions for the flap
-    public static final double ANGLE_UP = 90;
+    public static final double ANGLE_UP = 135;
+    public static final double ANGLE_LEVEL = 90;
     public static final double ANGLE_DOWN = 0;
     public static final double ANGLE_DISBALED = Double.NaN;
 
@@ -204,12 +205,12 @@ public final class Constants {
     public static final int MOTOR_CANID = 25;
     public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
     public static final IdleMode MOTOR_MODE = IdleMode.kBrake;
-    public static final boolean MOTOR_IS_INVERTED = false;
+    public static final boolean MOTOR_IS_INVERTED = true;
 
     public static final int MOTOR_SMART_CURRENT_LIMIT = 40;
 
-    public static final double SPEED_IN = 0.5;
-    public static final double SPEED_OUT = -0.5;
+    public static final double SPEED_IN = 1;
+    public static final double SPEED_OUT = -1;
   }
 
   public static class CandleConstants {

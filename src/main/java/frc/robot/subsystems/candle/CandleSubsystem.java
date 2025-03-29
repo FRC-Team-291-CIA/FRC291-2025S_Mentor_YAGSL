@@ -13,7 +13,7 @@ import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 import frc.robot.Constants.CandleConstants;
 
 public class CandleSubsystem extends SubsystemBase {
-    private final int LEDS_PER_ANIMATION = 144;
+    private final int LEDS_PER_ANIMATION = 123;
     private final CANdle m_candle = new CANdle(CandleConstants.CANdleID, "rio");
     private int m_candleChannel = 0;
     private boolean m_last5V = false;
@@ -54,7 +54,7 @@ public class CandleSubsystem extends SubsystemBase {
         m_candle.setLEDs(0, 0, 0, 0, 6, 1);
         m_candle.setLEDs(0, 0, 255, 0, 7, 1);
 
-        this.setWantedState(AnimationTypes.Fire);
+        this.setWantedState(AnimationTypes.Larson);
     }
 
     public void toggle5VOverride() {
@@ -116,12 +116,12 @@ public class CandleSubsystem extends SubsystemBase {
                 break;
             case Fire:
                 m_candleChannel = 0;
-                m_toAnimate = new FireAnimation(1, 0.7, LEDS_PER_ANIMATION, 0.8, 0, m_animDirection,
+                m_toAnimate = new FireAnimation(1, 0.3, LEDS_PER_ANIMATION, 0.4, 0, m_animDirection,
                         8);
                 break;
             case Larson:
                 m_candleChannel = 0;
-                m_toAnimate = new LarsonAnimation(0, 255, 46, 0, 0.1, LEDS_PER_ANIMATION, BounceMode.Front, 3,
+                m_toAnimate = new LarsonAnimation(255, 95, 31, 0, 0.25, LEDS_PER_ANIMATION, BounceMode.Front, 3,
                         8);
                 break;
             case Rainbow:
@@ -161,6 +161,8 @@ public class CandleSubsystem extends SubsystemBase {
                 break;
         }
         System.out.println("Changed to " + m_currentAnimation.toString());
+
+        m_candle.clearAnimation(m_candleChannel);
 
         m_candle.animate(m_toAnimate, m_candleChannel);
     }
